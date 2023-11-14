@@ -7,4 +7,9 @@ then
   exit 1
 fi
 
-git clone --recurse-submodules https://github.com/jak0b/dot.git "/tmp/dot"
+git clone \
+    --quiet \
+    --single-branch \
+    --recurse-submodules \
+    --branch 'jak0b/chore/feat/add-experimental-clone-scripts' \
+    https://github.com/jak0b/dot.git '/tmp/dot'
