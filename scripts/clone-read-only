@@ -1,0 +1,10 @@
+#!/bin/sh
+
+
+if ! &>/dev/null command git -v 
+then
+  1>&2 printf 'git is required!\n'
+  exit 1
+fi
+
+git clone --recurse-submodules https://github.com/jak0b/dot.git "/tmp/dot"
