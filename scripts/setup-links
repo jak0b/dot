@@ -1,0 +1,34 @@
+#!/bin/zsh
+
+if [ -n "$XDG_CONFIG_HOME" ];
+then # should be set on Linux
+  CONF_DIR="$XDG_CONFIG_HOME"
+else # used in Darwin or oter BSDs
+  CONF_DIR="$HOME/.config"
+fi
+
+
+function create_link() {
+  if [ $# -lt 2 ]
+  then
+    echo "not enough parameters"
+    return 1
+  fi
+
+  local src="$1" dst="$2"
+
+  if [ -L "$dst" ]
+  then
+    echo "link \"${dst}\" already exits"; return 
+  else
+    ln -s "$src" "$dst"
+  fi
+}
+
+create_link "${CONF_DIR}/dot/zsh" "${CONF_DIR}/zsh"
+create_link "${CONF_DIR}/zsh/zshrc.zsh" "$HOME/.zshrc"
+
+create_link "${CONF_DIR}/dot/wezterm" "${CONF_DIR}/wezterm"
+
+create_link "${CONF_DIR}/dot/htop" "${CONF_DIR}/htop"
+
