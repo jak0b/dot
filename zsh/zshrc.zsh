@@ -1,15 +1,33 @@
+if [ "$(uname)" = "Darwin" ]
+  then OS_DARWIN=true;
+elif [ "$(uname)" = "Linux" ]
+  then OS_LINUX=true;
+fi
+
 alias zsh-reload='source ~/.zshrc'
 
 ZSH_BASE="$HOME/.config/zsh"
 
-FPATH="/opt/homebrew/share/zsh/site-functions:${FPATH}"
+if $OS_DARWIN
+then
+  FPATH="/opt/homebrew/share/zsh/site-functions:${FPATH}"
+fi
 
 autoload -U compinit && compinit
 autoload -U colors && colors
 
-export PATH="/opt/homebrew/bin:${PATH}"
-export PATH="/opt/homebrew/sbin:${PATH}"
+if $OS_DARWIN
+then
+  export PATH="/opt/homebrew/bin:${PATH}"
+  export PATH="/opt/homebrew/sbin:${PATH}"
+fi
+
 export PATH="$HOME/.local/bin:${PATH}"
+
+if [ -d "$HOME/.local/scripts" ]
+then
+  export PATH="${PATH}:$HOME/.local/scripts"
+fi
 
 export ZSH_CACHE_DIR=$HOME/.cache/zsh
 if [ ! -d "$ZSH_CACHE_DIR" ]
@@ -40,10 +58,6 @@ zstyle ':completion:*' matcher-list 'm:{a-z}={A-Za-z}'
 function echoerr() {
   echo "$@" 1>&2;
 }
-
-if [ "$(uname)" = "Darwin" ]; then OS_DARWIN=true;
-elif [ "$(uname)" = "Linux" ]; then OS_LINUX=true;
-fi
 
 # fix keys
 # from https://stackoverflow.com/questions/8638012/fix-key-settings-home-end-insert-delete-in-zshrc-when-running-zsh-in-terminat
@@ -114,14 +128,14 @@ ZSH_THEME_RUBY_PROMPT_SUFFIX="›%f"
 source $ZSH_BASE/git/lib.zsh
 source $ZSH_BASE/git/aliases.zsh
 
-if [ -n "$OS_LINUX" ]
+if $OS_LINUX
 then
   source $ZSH_BASE/linux/systemd.zsh
   source $ZSH_BASE/linux/sway.zsh
   source $ZSH_BASE/linux/tools.zsh
 fi
 
-if [ -n "$OS_DARWIN" ]
+if $OS_DARWIN
 then
   source $ZSH_BASE/darwin/tools.zsh
 fi
