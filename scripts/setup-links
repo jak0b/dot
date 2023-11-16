@@ -7,28 +7,41 @@ else # used in Darwin or oter BSDs
   CONF_DIR="$HOME/.config"
 fi
 
+DOT_DIR="${CONF_DIR}/dot"
 
-function create_link() {
+# create a link if it doesn't exist
+# if the link is showing a different
+function ensure_link() {
   if [ $# -lt 2 ]
   then
     echo "not enough parameters"
     return 1
   fi
 
-  local src="$1" dst="$2"
+  local dst="$1" link="$2"
 
-  if [ -L "$dst" ]
+  if [ -L "$link" ]
   then
-    echo "link \"${dst}\" already exits"; return 
+    if [ $(readlink "$link") = "$dst" ]
+    then
+      echo "link \"${link}\" -> \"${dst}\" already exits"; return 
+    else
+      2>&1 echo "link \"${link}\" -> \"${dst}\" isn't pointing to expected location - relinking"; return 
+      unlink "$link" && ln -s "$dst" "$link"
+      echo "created link \"${link}\" -> \"${dst}\""; return 
+    fi
   else
-    ln -s "$src" "$dst"
+    ln -s "$dst" "$link"
+    echo "created link \"${link}\" -> \"${dst}\""; return 
   fi
 }
 
-create_link "${CONF_DIR}/dot/zsh" "${CONF_DIR}/zsh"
-create_link "${CONF_DIR}/zsh/zshrc.zsh" "$HOME/.zshrc"
+ensure_link "${DOT_DIR}/zsh" "${CONF_DIR}/zsh"
+ensure_link "${CONF_DIR}/zsh/zshrc.zsh" "$HOME/.zshrc"
 
-create_link "${CONF_DIR}/dot/wezterm" "${CONF_DIR}/wezterm"
+ensure_link "${DOT_DIR}/wezterm" "${CONF_DIR}/wezterm"
 
-create_link "${CONF_DIR}/dot/htop" "${CONF_DIR}/htop"
+ensure_link "${DOT_DIR}/htop" "${CONF_DIR}/htop"
+
+ensure_link "${DOT_DIR}/nvim" "${CONF_DIR}/nvim"
 
