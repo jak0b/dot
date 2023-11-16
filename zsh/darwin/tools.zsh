@@ -5,4 +5,3 @@ function default_route() {
 function ping-default-route() {
   ping "$@" "$(default_route)"
 }
-
