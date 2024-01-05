@@ -49,10 +49,18 @@ local function iosevka_style(style)
 end
 
 config.font_size = 20
-config.font = wezterm.font({
+local font_config = {
   family = "Iosevka Nerd Font",
-  weight = "Regular",
-})
+  stretch = 'Expanded',
+  harfbuzz_features = {iosevka_style('Default'), 'calt=0', 'clig=0', 'liga=0'}
+}
+
+if uname() == "Darwin"
+  then font_config["weight"] = "Light"
+  else font_config["weight"] = "Regular"
+end
+
+config.font = wezterm.font(font_config)
 
 config.hide_tab_bar_if_only_one_tab = true
 config.tab_and_split_indices_are_zero_based = true
