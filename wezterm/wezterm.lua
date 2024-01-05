@@ -75,4 +75,14 @@ elseif colorscheme == "light" then
   }
 end
 
+local hyperlink_rules = wezterm.default_hyperlink_rules()
+-- remove `mailto` from hyperlink rules
+for idx, val in ipairs(hyperlink_rules) do
+  if val.format == 'mailto:$0' then
+    table.remove(hyperlink_rules, idx)
+    break
+  end
+end
+config.hyperlink_rules = hyperlink_rules
+
 return config
