@@ -4,7 +4,7 @@ elif [ "$(uname)" = "Linux" ]
   then OS_LINUX=true;
 fi
 
-alias zsh-reload='source ~/.zshrc'
+alias reload='source ~/.zshrc'
 
 ZSH_BASE="$HOME/.config/zsh"
 
@@ -127,6 +127,7 @@ ZSH_THEME_RUBY_PROMPT_SUFFIX="›%f"
 
 source $ZSH_BASE/git/lib.zsh
 source $ZSH_BASE/git/aliases.zsh
+source $ZSH_BASE/tools/text.zsh
 
 if $OS_LINUX
 then
@@ -148,16 +149,13 @@ if (( $+commands[helm] ))
 then source $ZSH_BASE/tools/helm.zsh
 fi
 
-alias_check() {
-  local als=$(echo $1 | cut -f1 -d=)
-  local cmd=$(echo $1 | cut -f2 -d=)
+if (( $+commands[wg] ))
+then source $ZSH_BASE/tools/wireguard.zsh
+fi
 
-  if command -v "$cmd" &>/dev/null; then
-    alias "$als=$cmd"
-  else
-    return 1
-  fi
-}
+if (( $+commands[idasen-controller] ))
+then source $ZSH_BASE/tools/idasen.zsh
+fi
 
 alias_config() {
   local name="$1"
@@ -176,13 +174,15 @@ function pubip() {
   echo "$rsp"
 }
 
-alias_check ls=eza && {
+(( $+commands[eza] )) && {
+  alias ls='eza'
   alias l='ls'
   alias ll='ls -lg'
   alias la='ll -a'
 }
 
-alias_check ns=dog && { 
+(( $+commands[dog] )) && {
+  alias ns='dog'
   alias A='ns A'
   alias AAAA='ns AAAA'
   alias CNAME='ns CNAME'
@@ -193,23 +193,22 @@ alias_check ns=dog && {
   alias NS='ns NS'
 }
 
-alias_check v=nvim && {
+(( $+commands[nvim] )) && {
+  alias v='nvim'
   alias vy='v -c "set ft=yaml"'
   export EDITOR=nvim
   export VISUAL=nvim
 }
 
-alias_config zsh     "$HOME/.zshrc"
+alias_config zsh     "$HOME/.config/zsh/"
 alias_config ssh     "$HOME/.ssh/config"
-alias_config sshkn   "$HOME/.ssh/known_hosts"
-alias_config nvim    "$HOME/.config/nvim/init.lua"
+alias_config nvim    "$HOME/.config/nvim"
 alias_config term    "$HOME/.config/wezterm/wezterm.lua"
 
 export GOPATH=$HOME/Programming/go
 
 export PATH="${PATH}:${GOPATH}/bin"
 export PATH="${PATH}:${HOME}/.cargo/bin"
-export PATH="${PATH}:${HOME}/.krew/bin"
 
 alias ssh-proxy='ssh -TND 1080'
 
@@ -225,18 +224,5 @@ function cd_dots_alias() {
   done
 }
 cd_dots_alias 6 && unset -f cd_dots_alias
-
-function wg-pair() {
-  local priv_key=$(wg genkey)
-  local pub_key=$(echo "$priv_key" | wg pubkey)
-
-  if [ "$1" = "-f" ]; then
-    echo "$priv_key" > key
-    echo "$pub_key" > pub
-  else
-    echo 'private key:' "$priv_key"
-    echo 'public key: ' "$pub_key"
-  fi
-}
 
 [ -f ~/.fzf.zsh ] && source ~/.fzf.zsh
