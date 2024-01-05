@@ -4,6 +4,13 @@ local config = {}
 
 local colorscheme = "dark"
 
+function uname()
+  local proc = io.popen("uname 2>&1", "r")
+  local result = proc:read("*line")
+  if proc:close() == nil then return "not UNIX" end
+  return result
+end
+
 if wezterm.config_builder then
   config = wezterm.config_builder()
 end
