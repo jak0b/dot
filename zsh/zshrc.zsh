@@ -153,7 +153,7 @@ if (( $+commands[wg] ))
 then source $ZSH_BASE/tools/wireguard.zsh
 fi
 
-if (( $+commands[idasen-controller] ))
+if (( $+commands[curl] ))
 then source $ZSH_BASE/tools/idasen.zsh
 fi
 
