@@ -1,13 +1,14 @@
-function desk() {
+function idasen() {
+  local server_url='idasen.j0b.io:9000'
+
   local position="$1"
+  if [ "$position" = "to" ]; then
+    shift && position="$1"
+  fi
+  if [ -z "$position" ]; then
+    echo 'Position cannot be empty'
+    return 1
+  fi
 
-  local server_host='10.96.2.9'
-  local server_port='8080'
-
-  test -n "$position" && \
-  idasen-controller \
-    --forward \
-    --server-address "$server_host" \
-    --server_port "$server_port" \
-    --move-to "$position"
+  curl "${server_url}/${position}"
 }
