@@ -50,15 +50,11 @@ end
 
 config.font_size = 20
 local font_config = {
-  family = "Iosevka Nerd Font",
-  stretch = 'Expanded',
+  family  = "Iosevka Nerd Font",
+  stretch = "Expanded",
+  weight  = "Regular",
   harfbuzz_features = {iosevka_style('Default'), 'calt=0', 'clig=0', 'liga=0'}
 }
-
-if uname() == "Darwin"
-  then font_config["weight"] = "Light"
-  else font_config["weight"] = "Regular"
-end
 
 config.font = wezterm.font(font_config)
 
