@@ -1,5 +1,5 @@
 function idasen() {
-  local server_url='idasen.j0b.io:9000'
+  local server_url='idasen.jak0b.com'
 
   local position="$1"
   if [ "$position" = "to" ]; then
@@ -10,5 +10,5 @@ function idasen() {
     return 1
   fi
 
-  curl "${server_url}/${position}"
+  curl "${server_url}/api/${position}"
 }
