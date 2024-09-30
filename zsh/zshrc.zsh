@@ -39,7 +39,8 @@ function preexec() {
   print -Pn "\e]0;${(q)1}\e\\"
 }
 
-export PASSWORD_STORE_DIR=~/.local/share/pass
+export PASSWORD_STORE_DIR="${HOME}/.local/share/pass"
+export PASSWORD_STORE_EXTENSIONS_DIR=${HOME}/.local/share/
 
 HISTFILE=~/.zsh_history
 
