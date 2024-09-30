@@ -29,15 +29,17 @@ alias kdel='k delete'
 alias kdelf='k delete -f'
 alias kkdelf='fn_kkdelf(){ kk "$@" | kdelf -; unset -f fn_kkdelf }; fn_kkdelf'
 
+# Rollout general
+alias krs='k rollout status'
+alias krr='k rollout restart'
+
 # Pod management.
 alias kgp='k get pods'
 alias kgpa='k get pods --all-namespaces'
 alias kgpw='kgp --watch'
-alias kgpwide='kgp -o wide'
 alias kep='k edit pods'
 alias kdp='k describe pods'
 alias kdelp='k delete pods'
-alias kgpall='k get pods --all-namespaces -o wide'
 
 # get pod by label: kgpl "app=myapp" -n myns
 alias kgpl='kgp -l'
@@ -49,10 +51,17 @@ alias kgpn='kgp -n'
 alias kgs='k get svc'
 alias kgsa='k get svc --all-namespaces'
 alias kgsw='kgs --watch'
-alias kgswide='kgs -o wide'
 alias kes='k edit svc'
 alias kds='k describe svc'
 alias kdels='k delete svc'
+
+# Service account management.
+alias kgsc='k get serviceaccount'
+alias kgsca='k get serviceaccount --all-namespaces'
+alias kgscw='kgs --watch'
+alias kesc='k edit serviceaccount'
+alias kdsc='k describe serviceaccount'
+alias kdelsc='k delete serviceaccount'
 
 # Ingress management
 alias kgi='k get ingress'
@@ -84,12 +93,12 @@ alias kdelsec='k delete secret'
 alias kgd='k get deployment'
 alias kgda='k get deployment --all-namespaces'
 alias kgdw='kgd --watch'
-alias kgdwide='kgd -o wide'
 alias ked='k edit deployment'
 alias kdd='k describe deployment'
 alias kdeld='k delete deployment'
 alias ksd='k scale deployment'
-alias krsd='k rollout status deployment'
+alias krsd='krs deployment'
+alias krrd='krr deployment'
 
 function kres(){
   k set env $@ REFRESHED_AT=$(date +%Y%m%d%H%M%S)
@@ -106,12 +115,12 @@ alias kru='k rollout undo'
 alias kgss='k get statefulset'
 alias kgssa='k get statefulset --all-namespaces'
 alias kgssw='kgss --watch'
-alias kgsswide='kgss -o wide'
 alias kess='k edit statefulset'
 alias kdss='k describe statefulset'
 alias kdelss='k delete statefulset'
 alias ksss='k scale statefulset'
-alias krsss='k rollout status statefulset'
+alias krsss='krs statefulset'
+alias krrss='krr statefulset'
 
 # Port forwarding
 alias kpf="kubectl port-forward"
@@ -157,6 +166,8 @@ alias kgdsw='kgds --watch'
 alias keds='k edit daemonset'
 alias kdds='k describe daemonset'
 alias kdelds='k delete daemonset'
+alias krsds='krs daemonset'
+alias krrds='krr daemonset'
 
 # CronJob management.
 alias kgcj='k get cronjob'
@@ -172,22 +183,36 @@ alias kdelj='k delete job'
 
 
 function kc() {
-  local selected_ctx=$(kubectl config get-contexts | fzf --header-lines=1 | tail -c +2 | cut -d' ' -f 10)
-  kubectl config set current-context "$selected_ctx" &>/dev/null
+  local selected
+  if [ -n "$1" ]; then
+    selected="$1"
+  else
+    selected=$(kubectl config get-contexts | fzf --header-lines=1 | tail -c +2 | cut -d' ' -f 10)
+  fi
+
+  if [ -n "$selected" ]; then
+    kubectl config set current-context "$selected" &>/dev/null 
+  fi
 }
 
 function kn() {
-  local selected_ns=$(kubectl get ns | fzf --header-lines=1 | cut -d' ' -f 1)
-  kubectl config set-context --current --namespace "$selected_ns" &>/dev/null
+  local selected
+  if [ -n "$1" ]; then
+    selected="$1"
+  else
+    selected=$(kubectl get ns | fzf --header-lines=1 | cut -d' ' -f 1)
+  fi
+
+  echo "$selected"
+
+  if [ -n "$selected" ]; then
+    &>/dev/null kubectl config set-context --current --namespace "$selected"
+  fi
 }
 
-function kcc() {
-  kubectl config get-contexts | awk '/\*/{print $2; exit}'
-}
+function kcc() { kubectl config get-contexts | awk '/\*/{print $2; exit}' }
 
-function knc() {
-  kubectl config get-contexts | awk '/\*/{print $5; exit}'
-}
+function knc() { kubectl config get-contexts | awk '/\*/{print $5; exit}' }
 
 alias kg="k get"
 alias kd="k describe"
@@ -246,36 +271,10 @@ alias kgvatta="k get volumeattachments.storage.k8s.io --all-namespaces"
 alias kevatt="k edit volumeattachments.storage.k8s.io"
 
 # Scale deployment
-alias ksd0="ksd --replicas 0"
-alias ksd1="ksd --replicas 1"
-alias ksd2="ksd --replicas 2"
-alias ksd3="ksd --replicas 3"
-alias ksd4="ksd --replicas 4"
-alias ksd5="ksd --replicas 5"
-alias ksd6="ksd --replicas 6"
-alias ksd7="ksd --replicas 7"
-alias ksd8="ksd --replicas 8"
-alias ksd9="ksd --replicas 9"
-
-function ksdn {
-  ksd --replicas $1
-}
+for n in {0..9}; do alias "ksd${n}=ksd --replicas ${n}"; done
 
 # Scale stateful set
-alias ksss0="ksss --replicas 0"
-alias ksss1="ksss --replicas 1"
-alias ksss2="ksss --replicas 2"
-alias ksss3="ksss --replicas 3"
-alias ksss4="ksss --replicas 4"
-alias ksss5="ksss --replicas 5"
-alias ksss6="ksss --replicas 6"
-alias ksss7="ksss --replicas 7"
-alias ksss8="ksss --replicas 8"
-alias ksss9="ksss --replicas 9"
-
-function ksssn {
-  ksss --replicas $1
-}
+for n in {0..9}; do alias "ksss${n}=kss --replicas ${n}"; done
 
 function kdockersec {
   local secret_name docker_config from_file_arg
@@ -306,6 +305,3 @@ function kdockersec {
 
 alias kdelpf="kdelp --field-selector=status.phase==Failed"
 alias kdelpfa="kdelpf --all-namespaces"
-
-
-
