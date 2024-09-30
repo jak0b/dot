@@ -78,11 +78,11 @@ bindkey  "^[[3~"  delete-char
 if [[ $UID -ne 0 ]]; then # normal user
   PR_USER='%F{green}%n%f'
   # PR_USER_OP='%F{green}%#%f'
-  PR_PROMPT='%f➤ %f'
+  PR_PROMPT='%f➢ %f'
 else # root
   PR_USER='%F{red}%n%f'
   # PR_USER_OP='%F{red}%#%f'
-  PR_PROMPT='%F{red}➤ %f'
+  PR_PROMPT='%F{red}➢ %f'
 fi
 
 # Check if we are on SSH or not
@@ -92,7 +92,7 @@ else
   PR_HOST='%F{green}%m%f' # no SSH
 fi
 
-return_code="%(?..%F{red}%? ↵%f)"
+return_code="%(?..%F{red}%?↲ %f)"
 
 user_host="${PR_USER}%F{cyan}@${PR_HOST}"
 current_dir="%B%F{blue}%~%f%b"
@@ -121,10 +121,10 @@ RPROMPT="${return_code}"
 # unset return_code user_host current_dir git_branch
 # unset PR_USER PR_HOST PR_PROMPT
 
-ZSH_THEME_GIT_PROMPT_PREFIX="%F{yellow}‹"
-ZSH_THEME_GIT_PROMPT_SUFFIX="› %f"
-ZSH_THEME_RUBY_PROMPT_PREFIX="%F{red}‹"
-ZSH_THEME_RUBY_PROMPT_SUFFIX="›%f"
+ZSH_THEME_GIT_PROMPT_PREFIX="%F{yellow}⟪"
+ZSH_THEME_GIT_PROMPT_SUFFIX="⟫ %f"
+ZSH_THEME_RUBY_PROMPT_PREFIX="%F{red}⟪"
+ZSH_THEME_RUBY_PROMPT_SUFFIX="⟫%f"
 
 source $ZSH_BASE/git/lib.zsh
 source $ZSH_BASE/git/aliases.zsh
