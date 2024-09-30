@@ -204,6 +204,27 @@ function pubip() {
   export VISUAL=nvim
 }
 
+if (( $+commands[fzf] )); then
+  if $OS_DARWIN; then
+    # add fzf homebrew binaries to PATH
+    if [[ ! "$PATH" == */opt/homebrew/opt/fzf/bin* ]]; then
+      PATH="${PATH:+${PATH}:}/opt/homebrew/opt/fzf/bin"
+    fi
+
+    # auto complection
+    [[ $- == *i* ]] && source "/opt/homebrew/opt/fzf/shell/completion.zsh" 2> /dev/null
+
+    # key bindings
+    source "/opt/homebrew/opt/fzf/shell/key-bindings.zsh"
+  elif $OS_LINUX; then
+    # auto complection
+    [[ $- == *i* ]] && source "/usr/share/fzf/completion.zsh" 2> /dev/null
+
+    # key bindings
+    source "/usr/share/fzf/key-bindings.zsh"
+  fi
+fi
+
 alias_config zsh     "$HOME/.config/zsh/"
 alias_config ssh     "$HOME/.ssh/config"
 alias_config nvim    "$HOME/.config/nvim"
@@ -232,5 +253,3 @@ function cd_dots_alias() {
   done
 }
 cd_dots_alias 6 && unset -f cd_dots_alias
-
-[ -f ~/.fzf.zsh ] && source ~/.fzf.zsh
