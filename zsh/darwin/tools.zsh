@@ -5,3 +5,7 @@ function default_route() {
 function ping-default-route() {
   ping "$@" "$(default_route)"
 }
+
+function locip() {
+  ifconfig en0 inet | awk 'NR==3 {print $2}'
+}
