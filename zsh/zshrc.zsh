@@ -158,6 +158,10 @@ if (( $+commands[curl] ))
 then source $ZSH_BASE/tools/idasen.zsh
 fi
 
+if (( $+commands[aws] ))
+then source $ZSH_BASE/tools/aws.zsh
+fi
+
 alias_config() {
   local name="$1"
   local config_path="$2"
