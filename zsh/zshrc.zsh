@@ -183,15 +183,14 @@ function pubip() {
 }
 
 (( $+commands[dog] )) && {
-  alias ns='dog'
-  alias A='ns A'
-  alias AAAA='ns AAAA'
-  alias CNAME='ns CNAME'
+  alias A='dog A'
+  alias AAAA='dog AAAA'
+  alias CNAME='dog CNAME'
 
-  alias MX='ns MX'
-  alias SOA='ns SOA'
-  alias TXT='ns TXT'
-  alias NS='ns NS'
+  alias MX='dog MX'
+  alias SOA='dog SOA'
+  alias TXT='dog TXT'
+  alias NS='dog NS'
 }
 
 (( $+commands[nvim] )) && {
