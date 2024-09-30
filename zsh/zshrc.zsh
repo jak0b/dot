@@ -205,10 +205,14 @@ alias_config ssh     "$HOME/.ssh/config"
 alias_config nvim    "$HOME/.config/nvim"
 alias_config term    "$HOME/.config/wezterm/wezterm.lua"
 
-export GOPATH=$HOME/Programming/go
+(( $+commands[go] )) && {
+  export GOPATH=$HOME/Programming/go
+  export PATH="${PATH}:${GOPATH}/bin"
+}
 
-export PATH="${PATH}:${GOPATH}/bin"
-export PATH="${PATH}:${HOME}/.cargo/bin"
+(( $+commands[cargo] )) && {
+  export PATH="${PATH}:${HOME}/.cargo/bin"
+}
 
 alias ssh-proxy='ssh -TND 1080'
 
