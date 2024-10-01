@@ -80,6 +80,7 @@ ZSH_BASE="$HOME/.config/zsh"
 source $ZSH_BASE/git/lib.zsh
 source $ZSH_BASE/git/aliases.zsh
 source $ZSH_BASE/tools/text.zsh
+source $ZSH_BASE/tools/network.zsh
 
 export PATH="${PATH}:$HOME/.local/bin"
 
