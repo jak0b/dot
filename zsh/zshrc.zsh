@@ -27,8 +27,7 @@ ZSH_BASE="$HOME/.config/zsh"
 
 autoload -U compinit && compinit
 
-source $ZSH_BASE/git/lib.zsh
-source $ZSH_BASE/git/aliases.zsh
+source $ZSH_BASE/tools/git.zsh
 source $ZSH_BASE/tools/text.zsh
 source $ZSH_BASE/tools/network.zsh
 
@@ -82,6 +81,8 @@ case "$os" in
     export PATH="/opt/homebrew/bin:/opt/homebrew/sbin:${PATH}"
     FPATH="/opt/homebrew/share/zsh/site-functions:${FPATH}"
     source $ZSH_BASE/darwin/tools.zsh
+    alias c='pbcopy'
+    alias p='pbpaste'
     ;;
 esac
 
