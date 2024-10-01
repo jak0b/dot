@@ -139,6 +139,11 @@ fi
   export VISUAL=nvim
 }
 
+(( $+commands[pass] )) && {
+  export PASSWORD_STORE_DIR="$HOME/.local/share/pass"
+  export PASSWORD_STORE_ENABLE_EXTENSIONS="$HOME/.local/lib/pass/"
+}
+
 if (( $+commands[fzf] )); then
   case "$os" in
     Darwin)
