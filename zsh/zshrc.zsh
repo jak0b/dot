@@ -1,42 +1,4 @@
-os=$(uname)
-
-alias reload='source ~/.zshrc'
-
-ZSH_BASE="$HOME/.config/zsh"
-
-if [[ $os == "Linux" ]]
-then FPATH="/opt/homebrew/share/zsh/site-functions:${FPATH}"
-fi
-
-autoload -U compinit && compinit
-autoload -U colors && colors
-
-if [[ $os == "Darwin" ]]
-then export PATH="/opt/homebrew/bin:/opt/homebrew/sbin:${PATH}"
-fi
-
-export PATH="$HOME/.local/bin:${PATH}"
-
-if [ -d "$HOME/.local/scripts" ]
-then
-  export PATH="${PATH}:$HOME/.local/scripts"
-fi
-
-export ZSH_CACHE_DIR=$HOME/.cache/zsh
-if [ ! -d "$ZSH_CACHE_DIR" ]
-then
-  mkdir "$ZSH_CACHE_DIR"
-fi
-
-function preexec() {
-  print -Pn "\e]0;${(q)1}\e\\"
-}
-
-export PASSWORD_STORE_DIR="${HOME}/.local/share/pass"
-export PASSWORD_STORE_EXTENSIONS_DIR=${HOME}/.local/share/
-
 HISTFILE=~/.zsh_history
-
 HISTSIZE=100000
 SAVEHIST=100000
 
@@ -49,23 +11,13 @@ setopt prompt_subst
 zstyle ':completion:*' menu select
 zstyle ':completion:*' matcher-list 'm:{a-z}={A-Za-z}'
 
-function echoerr() {
-  echo "$@" 1>&2;
-}
+function preexec() { print -Pn "\e]0;${(q)1}\e\\"; }
 
 # fix keys
 # from https://stackoverflow.com/questions/8638012/fix-key-settings-home-end-insert-delete-in-zshrc-when-running-zsh-in-terminat
 bindkey  "^[[H"   beginning-of-line
 bindkey  "^[[F"   end-of-line
 bindkey  "^[[3~"  delete-char
-
-
-# ██████╗ ██████╗  ██████╗ ███╗   ███╗██████╗ ████████╗
-# ██╔══██╗██╔══██╗██╔═══██╗████╗ ████║██╔══██╗╚══██╔══╝
-# ██████╔╝██████╔╝██║   ██║██╔████╔██║██████╔╝   ██║   
-# ██╔═══╝ ██╔══██╗██║   ██║██║╚██╔╝██║██╔═══╝    ██║   
-# ██║     ██║  ██║╚██████╔╝██║ ╚═╝ ██║██║        ██║   
-# ╚═╝     ╚═╝  ╚═╝ ╚═════╝ ╚═╝     ╚═╝╚═╝        ╚═╝   
 
 # Check the UID
 if [[ $UID -ne 0 ]]; then # normal user
@@ -119,20 +71,39 @@ ZSH_THEME_GIT_PROMPT_SUFFIX="⟫ %f"
 ZSH_THEME_RUBY_PROMPT_PREFIX="%F{red}⟪"
 ZSH_THEME_RUBY_PROMPT_SUFFIX="⟫%f"
 
+os=$(uname)
+
+alias reload='source ~/.zshrc'
+
+ZSH_BASE="$HOME/.config/zsh"
+
 source $ZSH_BASE/git/lib.zsh
 source $ZSH_BASE/git/aliases.zsh
 source $ZSH_BASE/tools/text.zsh
 
-if [[ $os == "Linux" ]]
-then
-  source $ZSH_BASE/linux/systemd.zsh
-  source $ZSH_BASE/linux/sway.zsh
-  source $ZSH_BASE/linux/tools.zsh
+export PATH="${PATH}:$HOME/.local/bin"
+
+case "$os" in
+  Linux)
+    source $ZSH_BASE/linux/tools.zsh
+    FPATH="${FPATH}:/usr/share/zsh/site-functions"
+    ;;
+  Darwin)
+    export PATH="/opt/homebrew/bin:/opt/homebrew/sbin:${PATH}"
+    FPATH="/opt/homebrew/share/zsh/site-functions:${FPATH}"
+    source $ZSH_BASE/darwin/tools.zsh
+    ;;
+esac
+
+autoload -U compinit && compinit
+autoload -U colors && colors
+
+if (( $+commands[systemctl] ))
+then source $ZSH_BASE/linux/systemd.zsh
 fi
 
-if [[ $os == "Darwin" ]]
-then
-  source $ZSH_BASE/darwin/tools.zsh
+if (( $+commands[sway] ))
+then source $ZSH_BASE/linux/sway.zsh
 fi
 
 if (( $+commands[kubectl] ))
@@ -154,23 +125,6 @@ fi
 if (( $+commands[aws] ))
 then source $ZSH_BASE/tools/aws.zsh
 fi
-
-alias_config() {
-  local name="$1"
-  local config_path="$2"
-
-  if [ -n "$EDITOR" ]; then
-    alias "$name"conf="$EDITOR $config_path"
-  else
-    return 1
-  fi
-}
-
-function pubip() {
-  local ip_version="${1:-64}"
-  local rsp=$(curl -s "https://api${ip_version}.ipify.org")
-  echo "$rsp"
-}
 
 (( $+commands[eza] )) && {
   alias ls='eza'
