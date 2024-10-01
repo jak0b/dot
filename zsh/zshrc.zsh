@@ -19,63 +19,13 @@ bindkey  "^[[H"   beginning-of-line
 bindkey  "^[[F"   end-of-line
 bindkey  "^[[3~"  delete-char
 
-# Check the UID
-if [[ $UID -ne 0 ]]; then # normal user
-  PR_USER='%F{green}%n%f'
-  # PR_USER_OP='%F{green}%#%f'
-  PR_PROMPT='%f➢ %f'
-else # root
-  PR_USER='%F{red}%n%f'
-  # PR_USER_OP='%F{red}%#%f'
-  PR_PROMPT='%F{red}➢ %f'
-fi
-
-# Check if we are on SSH or not
-if [[ -n "$SSH_CLIENT"  ||  -n "$SSH2_CLIENT" ]]; then
-  PR_HOST='%F{red}%M%f' # SSH
-else
-  PR_HOST='%F{green}%m%f' # no SSH
-fi
-
-return_code="%(?..%F{red}%?↲ %f)"
-
-user_host="${PR_USER}%F{cyan}@${PR_HOST}"
-current_dir="%B%F{blue}%~%f%b"
-git_branch='$(git_prompt_info)'
-
-# disable vi keys
-# bindkey -v
-
-function zle-line-init zle-keymap-select {
-    case ${KEYMAP} in
-        (vicmd)
-PROMPT="${user_host} ${current_dir} ${git_branch}▨
-$PR_PROMPT " ;;
-        (*)
-PROMPT="${user_host} ${current_dir} ${git_branch}
-$PR_PROMPT " ;;
-    esac
-    zle reset-prompt
-}
-
-zle -N zle-line-init
-zle -N zle-keymap-select
-
-RPROMPT="${return_code}"
-
-# unset return_code user_host current_dir git_branch
-# unset PR_USER PR_HOST PR_PROMPT
-
-ZSH_THEME_GIT_PROMPT_PREFIX="%F{yellow}⟪"
-ZSH_THEME_GIT_PROMPT_SUFFIX="⟫ %f"
-ZSH_THEME_RUBY_PROMPT_PREFIX="%F{red}⟪"
-ZSH_THEME_RUBY_PROMPT_SUFFIX="⟫%f"
-
 os=$(uname)
 
 alias reload='source ~/.zshrc'
 
 ZSH_BASE="$HOME/.config/zsh"
+
+autoload -U compinit && compinit
 
 source $ZSH_BASE/git/lib.zsh
 source $ZSH_BASE/git/aliases.zsh
@@ -83,6 +33,45 @@ source $ZSH_BASE/tools/text.zsh
 source $ZSH_BASE/tools/network.zsh
 
 export PATH="${PATH}:$HOME/.local/bin"
+
+setup_prompt() {
+  autoload -U colors && colors
+
+  GIT_INFO_PREFIX='%F{yellow}⟪ '
+  GIT_INFO_SUFFIX=' ⟫ %f'
+
+  local arrow='➢'
+  local back_arrow='↲'
+
+  local prompt_user prompt_line prompt_host
+  case "$UID" in
+    0)
+      prompt_user='%F{red}%n%f'
+      prompt_line="%F{red}${arrow} %f"
+      ;;
+    *)
+      prompt_user='%F{green}%n%f'
+      prompt_line="%f${arrow} %f"
+      ;;
+  esac
+
+  if [[ -n "$SSH_CLIENT" || -n "$SSH2_CLIENT" ]]
+  then
+    prompt_host='%F{red}%M%f'
+  else
+    prompt_host='%F{green}%m%f'
+  fi
+
+  local user_host="${prompt_user}%F{cyan}@${prompt_host}"
+  local dir_info="%B%F{blue}%~%f%b"
+  local return_code="%(?..%F{red}%? ${back_arrow} %f)"
+
+  local git_info='$(git_prompt_info)'
+
+  PROMPT="$(printf '%s %s %s\n%s ' "$user_host" "$dir_info" "$git_info" "$prompt_line")"
+  RPROMPT="$(printf '%s' "$return_code")"
+}
+setup_prompt
 
 case "$os" in
   Linux)
@@ -95,9 +84,6 @@ case "$os" in
     source $ZSH_BASE/darwin/tools.zsh
     ;;
 esac
-
-autoload -U compinit && compinit
-autoload -U colors && colors
 
 if (( $+commands[systemctl] ))
 then source $ZSH_BASE/linux/systemd.zsh
