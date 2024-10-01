@@ -1,25 +1,18 @@
-if [ "$(uname)" = "Darwin" ]
-  then OS_DARWIN=true;
-elif [ "$(uname)" = "Linux" ]
-  then OS_LINUX=true;
-fi
+os=$(uname)
 
 alias reload='source ~/.zshrc'
 
 ZSH_BASE="$HOME/.config/zsh"
 
-if $OS_DARWIN
-then
-  FPATH="/opt/homebrew/share/zsh/site-functions:${FPATH}"
+if [[ $os == "Linux" ]]
+then FPATH="/opt/homebrew/share/zsh/site-functions:${FPATH}"
 fi
 
 autoload -U compinit && compinit
 autoload -U colors && colors
 
-if $OS_DARWIN
-then
-  export PATH="/opt/homebrew/bin:${PATH}"
-  export PATH="/opt/homebrew/sbin:${PATH}"
+if [[ $os == "Darwin" ]]
+then export PATH="/opt/homebrew/bin:/opt/homebrew/sbin:${PATH}"
 fi
 
 export PATH="$HOME/.local/bin:${PATH}"
@@ -130,14 +123,14 @@ source $ZSH_BASE/git/lib.zsh
 source $ZSH_BASE/git/aliases.zsh
 source $ZSH_BASE/tools/text.zsh
 
-if $OS_LINUX
+if [[ $os == "Linux" ]]
 then
   source $ZSH_BASE/linux/systemd.zsh
   source $ZSH_BASE/linux/sway.zsh
   source $ZSH_BASE/linux/tools.zsh
 fi
 
-if $OS_DARWIN
+if [[ $os == "Darwin" ]]
 then
   source $ZSH_BASE/darwin/tools.zsh
 fi
@@ -205,24 +198,19 @@ function pubip() {
 }
 
 if (( $+commands[fzf] )); then
-  if $OS_DARWIN; then
-    # add fzf homebrew binaries to PATH
-    if [[ ! "$PATH" == */opt/homebrew/opt/fzf/bin* ]]; then
-      PATH="${PATH:+${PATH}:}/opt/homebrew/opt/fzf/bin"
-    fi
-
-    # auto complection
-    [[ $- == *i* ]] && source "/opt/homebrew/opt/fzf/shell/completion.zsh" 2> /dev/null
-
-    # key bindings
-    source "/opt/homebrew/opt/fzf/shell/key-bindings.zsh"
-  elif $OS_LINUX; then
-    # auto complection
-    [[ $- == *i* ]] && source "/usr/share/fzf/completion.zsh" 2> /dev/null
-
-    # key bindings
-    source "/usr/share/fzf/key-bindings.zsh"
-  fi
+  case "$os" in
+    Darwin)
+      if [[ ! "$PATH" == */opt/homebrew/opt/fzf/bin* ]]; then
+        PATH="${PATH:+${PATH}:}/opt/homebrew/opt/fzf/bin"
+      fi
+      [[ $- == *i* ]] && source "/opt/homebrew/opt/fzf/shell/completion.zsh" 2> /dev/null
+      source "/opt/homebrew/opt/fzf/shell/key-bindings.zsh"
+      ;;
+    Linux)
+      [[ $- == *i* ]] && source "/usr/share/fzf/completion.zsh" 2> /dev/null
+      source "/usr/share/fzf/key-bindings.zsh"
+      ;;
+  esac
 fi
 
 alias_config zsh     "$HOME/.config/zsh/"
