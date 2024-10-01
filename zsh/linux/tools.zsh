@@ -5,6 +5,9 @@ function ping-default-route() {
   ping "$@" "$(default-route)"
 }
 
+function locip() {
+  ip route get 1.1.1.1 | awk 'NR==1{print $7}'
+}
 
 function arch-remove-orphans() {
   if command &>/dev/null yay -V;
