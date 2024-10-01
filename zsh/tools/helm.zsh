@@ -1,10 +1,3 @@
-if [[ ! -f "$ZSH_CACHE_DIR/_helm" ]]; then
-  helm completion zsh | tee "$ZSH_CACHE_DIR/_helm" >/dev/null
-  source "$ZSH_CACHE_DIR/_helm"
-else
-  source "$ZSH_CACHE_DIR/_helm"
-fi
-
 alias hc="helm create"
 
 alias hdepb="helm dependency build"

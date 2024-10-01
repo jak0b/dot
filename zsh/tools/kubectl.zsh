@@ -1,14 +1,3 @@
-CACHE_FILE="${ZSH_CACHE_DIR}/_kubectl"
-
-if [[ ! -f "$CACHE_FILE" ]]
-then
-  command kubectl completion zsh > "$CACHE_FILE"
-  source "$CACHE_FILE"
-else
-  source "$CACHE_FILE"
-fi
-unset CACHE_FILE
-
 # This command is used a LOT both below and in daily life
 alias k=kubectl
 
