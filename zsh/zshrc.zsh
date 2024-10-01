@@ -213,23 +213,15 @@ if (( $+commands[fzf] )); then
   esac
 fi
 
-alias_config zsh     "$HOME/.config/zsh/"
-alias_config ssh     "$HOME/.ssh/config"
-alias_config nvim    "$HOME/.config/nvim"
-alias_config term    "$HOME/.config/wezterm/wezterm.lua"
-
-(( $+commands[go] )) && {
-  export GOPATH=$HOME/Programming/go
-  export PATH="${PATH}:${GOPATH}/bin"
-}
-
-(( $+commands[cargo] )) && {
-  export PATH="${PATH}:${HOME}/.cargo/bin"
-}
-
-alias ssh-proxy='ssh -TND 1080'
-
-alias _='sudo'
+alias_config() {
+  local name="$1" config_path="$2"
+  [[ -n $EDITOR ]] && alias "$name"conf="$EDITOR $config_path"
+}; {
+  alias_config zsh     "$HOME/.config/zsh/"
+  alias_config ssh     "$HOME/.ssh/config"
+  alias_config nvim    "$HOME/.config/nvim"
+  alias_config term    "$HOME/.config/wezterm/wezterm.lua"
+} && unset -f alias_config
 
 function cd_dots_alias() {
   local dots=".."
