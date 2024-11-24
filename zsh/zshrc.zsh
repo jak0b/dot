@@ -57,10 +57,6 @@ case "$os" in
     then source $ZSH_BASE/linux/systemd.zsh
     fi
 
-    if (( $+commands[sway] ))
-    then source $ZSH_BASE/linux/sway.zsh
-    fi
-
     if (( $+commands[wl-copy] ))
     then
       alias c='wl-copy'
@@ -84,10 +80,6 @@ fi
 
 if (( $+commands[helm] ))
 then source $ZSH_BASE/tools/helm.zsh
-fi
-
-if (( $+commands[wg] ))
-then source $ZSH_BASE/tools/wireguard.zsh
 fi
 
 if (( $+commands[curl] ))
