@@ -26,7 +26,7 @@ local function iosevka_style(style)
   end
 end
 
-config.font_size = 20
+config.font_size = 16
 config.font = wezterm.font({
   family = "Iosevka Nerd Font",
   stretch = 'Expanded',
@@ -39,8 +39,11 @@ config.window_frame = {
     family = "Iosevka Nerd Font",
     weight = "Bold",
   },
-  font_size = config.font_size * 3/5
+  font_size = .7 * config.font_size
 }
+
+config.default_cursor_style = 'SteadyBlock'
+config.cursor_thickness = '1.3'
 
 config.tab_and_split_indices_are_zero_based = true
 config.adjust_window_size_when_changing_font_size = false
