@@ -67,6 +67,7 @@ case "$os" in
     export PATH="/opt/homebrew/bin:/opt/homebrew/sbin:${PATH}"
     FPATH="${FPATH}:/opt/homebrew/share/zsh/site-functions"
     source $ZSH_BASE/darwin/tools.zsh
+    source $ZSH_BASE/darwin/defaults.zsh
     alias c='pbcopy'
     alias p='pbpaste'
     ;;
