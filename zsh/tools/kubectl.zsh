@@ -173,35 +173,33 @@ alias kdelj='k delete job'
 
 function kc() {
   local selected
-  if [ -n "$1" ]; then
-    selected="$1"
-  else
-    selected=$(kubectl config get-contexts | fzf --header-lines=1 | tail -c +2 | cut -d' ' -f 10)
+  if [[ -n $1 ]]
+  then selected="$1"
+  else selected=$(kubectl config get-contexts | fzf --header-lines=1 | tail -c +2 | cut -d' ' -f 10)
   fi
 
-  if [ -n "$selected" ]; then
-    kubectl config set current-context "$selected" &>/dev/null 
+  if [[ -n "$selected" ]]
+  then kubectl config set current-context "$selected" &>/dev/null 
   fi
 }
 
 function kn() {
   local selected
-  if [ -n "$1" ]; then
-    selected="$1"
-  else
-    selected=$(kubectl get ns | fzf --header-lines=1 | cut -d' ' -f 1)
+  if [[ -n "$1" ]]
+  then selected="$1"
+  else selected=$(kubectl get ns | fzf --header-lines=1 | cut -d' ' -f 1)
   fi
 
   echo "$selected"
 
-  if [ -n "$selected" ]; then
-    &>/dev/null kubectl config set-context --current --namespace "$selected"
+  if [[ -n "$selected" ]]
+  then &>/dev/null kubectl config set-context --current --namespace "$selected"
   fi
 }
 
-function kcc() { kubectl config get-contexts | awk '/\*/{print $2; exit}' }
+function kcc() { kubectl config get-contexts | awk '/\*/{print $2; exit}'; }
 
-function knc() { kubectl config get-contexts | awk '/\*/{print $5; exit}' }
+function knc() { kubectl config get-contexts | awk '/\*/{print $5; exit}'; }
 
 alias kg="k get"
 alias kd="k describe"
@@ -265,26 +263,22 @@ for n in {0..9}; do alias "ksd${n}=ksd --replicas ${n}"; done
 # Scale stateful set
 for n in {0..9}; do alias "ksss${n}=kss --replicas ${n}"; done
 
-function kdockersec {
+function kdockersec() {
   local secret_name docker_config from_file_arg
   local secret_type_arg='--type=kubernetes.io/dockerconfigjson'
 
-  if [ -z "$1" ]; then
-    echo no secret name
-    return 1
-  else
-    secret_name="$1"
+  if [[ -z $1 ]]
+  then die 'no secret name'
+  else secret_name="$1"
   fi
 
-  if [ -z "$2" ]; then
-    docker_config="$HOME/.docker/config.json"
-  else
-    docker_config="$2"
+  if [[ -z $2 ]]
+  then docker_config="$HOME/.docker/config.json"
+  else docker_config="$2"
   fi
 
-  if [ ! -f $docker_config ]; then
-    echo docker config does not exist
-    return 1
+  if [[ ! -f $docker_config ]]
+  then die 'docker config does not exist'
   fi
 
   from_file_arg="--from-file=.dockerconfigjson=$docker_config"
