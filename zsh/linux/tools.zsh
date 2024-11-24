@@ -1,13 +1,6 @@
-function default-route() {
-  ip route | awk '/^default.*/{print $3; exit}'
-}
-function ping-default-route() {
-  ping "$@" "$(default-route)"
-}
+function default-route() { ip route | awk '/^default.*/{print $3; exit}'; }
 
-function locip() {
-  ip route get 1.1.1.1 | awk 'NR==1{print $7}'
-}
+function locip() { ip route get 1.1.1.1 | awk 'NR==1{print $7}'; }
 
 function arch-remove-orphans() {
   if command &>/dev/null yay -V;
@@ -59,28 +52,6 @@ function findusb() {
       fi
     fi
   done
-}
-
-function all-monitor-output() {
-  # local loaded_module=$(pactl list modules short | awk '/.*sink_name=Displays.*/ { print $1 }')
-  # if [-n "$module_is_loaded" ]; then
-  #   pactl unload-module "$"
-  # fi
-  local sinks=$(pactl list sinks short \
-                | awk '/.*platform-skl_hda_dsp_generic\.?([[:digit:]]*)?\.HiFi__hw_sofhdadsp_[[:digit:]]__sink/{printf(NR>1?",":"")$2}')
-  # echo "$sinks"
-  pactl load-module module-combine-sink sink_name='Displays' slaves="$sinks" channels=2
-}
-
-function all-monitor-output() {
-  # local loaded_module=$(pactl list modules short | awk '/.*sink_name=Displays.*/ { print $1 }')
-  # if [-n "$module_is_loaded" ]; then
-  #   pactl unload-module "$"
-  # fi
-  local sinks=$(pactl list sinks short \
-                | awk '/.*platform-skl_hda_dsp_generic\.?([[:digit:]]*)?\.HiFi__hw_sofhdadsp_[[:digit:]]__sink/{printf(NR>1?",":"")$2}')
-  # echo "$sinks"
-  pactl load-module module-combine-sink sink_name='Displays' slaves="$sinks" channels=2
 }
 
 function iwctl-reconnect() {
