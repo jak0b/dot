@@ -39,7 +39,7 @@ function ensure_link() {
 ensure_link "${DOT_DIR}/zsh" "${CONF_DIR}/zsh"
 ensure_link "${CONF_DIR}/zsh/zshrc.zsh" "$HOME/.zshrc"
 
-ensure_link "${DOT_DIR}/wezterm" "${CONF_DIR}/wezterm"
+ensure_link "${DOT_DIR}/wezterm/wezterm.lua" "${CONF_DIR}/wezterm"
 
 ensure_link "${DOT_DIR}/htop" "${CONF_DIR}/htop"
 
