@@ -1,6 +1,6 @@
 HISTFILE=~/.zsh_history
-HISTSIZE=100000
-SAVEHIST=100000
+HISTSIZE=1000000
+SAVEHIST=1000000
 
 setopt appendhistory     # append history to the history file (no overwriting)
 setopt sharehistory      # share history across terminals
@@ -21,78 +21,62 @@ bindkey  "^[[3~"  delete-char
 
 os=$(uname)
 
-alias reload='source ~/.zshrc'
-
 ZSH_BASE="$HOME/.config/zsh"
 
 autoload -U compinit && compinit
 
+source $ZSH_BASE/prompt.zsh
 source $ZSH_BASE/tools/git.zsh
 source $ZSH_BASE/tools/text.zsh
 source $ZSH_BASE/tools/network.zsh
 
+if [[ -f $ZSH_BASE/local.zsh ]]
+then source $ZSH_BASE/local.zsh
+fi
+
 export PATH="${PATH}:$HOME/.local/bin"
 
-setup_prompt() {
-  autoload -U colors && colors
+setup_prompt && unset -f setup_prompt
 
-  GIT_INFO_PREFIX='%F{yellow}⟪ '
-  GIT_INFO_SUFFIX=' ⟫ %f'
+function eecho() { 1>&2 echo "$*"; }
 
-  local arrow='➢'
-  local back_arrow='↲'
-
-  local prompt_user prompt_line prompt_host
-  case "$UID" in
-    0)
-      prompt_user='%F{red}%n%f'
-      prompt_line="%F{red}${arrow} %f"
-      ;;
-    *)
-      prompt_user='%F{green}%n%f'
-      prompt_line="%f${arrow} %f"
-      ;;
-  esac
-
-  if [[ -n "$SSH_CLIENT" || -n "$SSH2_CLIENT" ]]
-  then
-    prompt_host='%F{red}%M%f'
-  else
-    prompt_host='%F{green}%m%f'
+function die() {
+  if [[ $1 =~ ^[0-9]+$ ]]; then 
+    local rc="$1" && shift
   fi
-
-  local user_host="${prompt_user}%F{cyan}@${prompt_host}"
-  local dir_info="%B%F{blue}%~%f%b"
-  local return_code="%(?..%F{red}%? ${back_arrow} %f)"
-
-  local git_info='$(git_prompt_info)'
-
-  PROMPT="$(printf '%s %s %s\n%s ' "$user_host" "$dir_info" "$git_info" "$prompt_line")"
-  RPROMPT="$(printf '%s' "$return_code")"
+  [[ $# -gt 0 ]] && eecho "$*"
+  [[ -n $rc ]] && return "$rc" || return 1
 }
-setup_prompt
 
 case "$os" in
   Linux)
     source $ZSH_BASE/linux/tools.zsh
     FPATH="${FPATH}:/usr/share/zsh/site-functions"
+
+    if (( $+commands[systemctl] ))
+    then source $ZSH_BASE/linux/systemd.zsh
+    fi
+
+    if (( $+commands[sway] ))
+    then source $ZSH_BASE/linux/sway.zsh
+    fi
+
+    if (( $+commands[wl-copy] ))
+    then
+      alias c='wl-copy'
+      alias p='wl-paste'
+    fi
     ;;
   Darwin)
     export PATH="/opt/homebrew/bin:/opt/homebrew/sbin:${PATH}"
-    FPATH="/opt/homebrew/share/zsh/site-functions:${FPATH}"
+    FPATH="${FPATH}:/opt/homebrew/share/zsh/site-functions"
     source $ZSH_BASE/darwin/tools.zsh
     alias c='pbcopy'
     alias p='pbpaste'
     ;;
 esac
 
-if (( $+commands[systemctl] ))
-then source $ZSH_BASE/linux/systemd.zsh
-fi
-
-if (( $+commands[sway] ))
-then source $ZSH_BASE/linux/sway.zsh
-fi
+alias r="source $ZSH_BASE/zshrc.zsh"
 
 if (( $+commands[kubectl] ))
 then source $ZSH_BASE/tools/kubectl.zsh
@@ -141,7 +125,17 @@ fi
 
 (( $+commands[pass] )) && {
   export PASSWORD_STORE_DIR="$HOME/.local/share/pass"
-  export PASSWORD_STORE_ENABLE_EXTENSIONS="$HOME/.local/lib/pass/"
+  export PASSWORD_STORE_EXTENSIONS_DIR="$HOME/.local/lib/pass/"
+  export PASSWORD_STORE_ENABLE_EXTENSIONS='true'
+}
+
+(( $+commands[go] )) && {
+  export GOPATH="$HOME/Programming/go"
+  export PATH="$PATH:$GOPATH/bin"
+}
+
+(( $+commands[cargo] )) && {
+  export PATH="$PATH:$HOME/.cargo/bin"
 }
 
 if (( $+commands[fzf] )); then
@@ -151,16 +145,16 @@ if (( $+commands[fzf] )); then
         PATH="${PATH:+${PATH}:}/opt/homebrew/opt/fzf/bin"
       fi
       [[ $- == *i* ]] && source "/opt/homebrew/opt/fzf/shell/completion.zsh" 2> /dev/null
-      source "/opt/homebrew/opt/fzf/shell/key-bindings.zsh"
+      source '/opt/homebrew/opt/fzf/shell/key-bindings.zsh'
       ;;
     Linux)
       [[ $- == *i* ]] && source "/usr/share/fzf/completion.zsh" 2> /dev/null
-      source "/usr/share/fzf/key-bindings.zsh"
+      source '/usr/share/fzf/key-bindings.zsh'
       ;;
   esac
 fi
 
-alias_config() {
+function alias_config() {
   local name="$1" config_path="$2"
   [[ -n $EDITOR ]] && alias "$name"conf="$EDITOR $config_path"
 }; {
@@ -171,12 +165,15 @@ alias_config() {
 } && unset -f alias_config
 
 function cd_dots_alias() {
-  local dots=".."
-  local path="../"
+  local dots=".." path="../"
 
   for i in {1..$1}; do
     alias ${dots}="cd ${path}"
     dots="${dots}."; path="${path}../"
   done
-}
-cd_dots_alias 6 && unset -f cd_dots_alias
+} && cd_dots_alias 6 && unset -f cd_dots_alias
+
+compinit
+j
+source ~/.config/environment.d/ssh_auth_socket.conf
+export SSH_AUTH_SOCK
