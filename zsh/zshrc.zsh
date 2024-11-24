@@ -72,6 +72,10 @@ case "$os" in
     ;;
 esac
 
+if [[ -f $ZSH_BASE/local.zsh ]]
+then source $ZSH_BASE/local.zsh
+fi
+
 alias r="source $ZSH_BASE/zshrc.zsh"
 
 if (( $+commands[kubectl] ))
@@ -166,5 +170,3 @@ function cd_dots_alias() {
 } && cd_dots_alias 6 && unset -f cd_dots_alias
 
 compinit
-source ~/.config/environment.d/ssh_auth_socket.conf
-export SSH_AUTH_SOCK
