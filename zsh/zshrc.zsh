@@ -166,6 +166,5 @@ function cd_dots_alias() {
 } && cd_dots_alias 6 && unset -f cd_dots_alias
 
 compinit
-j
 source ~/.config/environment.d/ssh_auth_socket.conf
 export SSH_AUTH_SOCK
