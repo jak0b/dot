@@ -1,6 +1,6 @@
 #!/bin/zsh
 
-if [ -n "$XDG_CONFIG_HOME" ];
+if [[ -n $XDG_CONFIG_HOME ]];
 then # should be set on Linux
   CONF_DIR="$XDG_CONFIG_HOME"
 else # used in Darwin or oter BSDs
@@ -9,39 +9,28 @@ fi
 
 DOT_DIR="${CONF_DIR}/dot"
 
-# create a link if it doesn't exist
-# if the link is showing a different
-function ensure_link() {
-  if [ $# -lt 2 ]
-  then
-    echo "not enough parameters"
-    return 1
-  fi
-
+function point() {
   local dst="$1" link="$2"
 
-  if [ -L "$link" ]
+  if [[ -L $link ]]
   then
-    if [ $(readlink "$link") = "$dst" ]
+    if [[ $(readlink "$link") == $dst ]]
     then
-      echo "link \"${link}\" -> \"${dst}\" already exits"; return 
+      printf 'link "%s" -> "%s" already exist\n' "$link" "$dst"
+      return 
     else
-      2>&1 echo "link \"${link}\" -> \"${dst}\" isn't pointing to expected location - relinking"; return 
+      printf 'link "%s" -> "%s" is not pointing to expected location - relinking\n' "$link" "$dst" 2>&1
       unlink "$link" && ln -s "$dst" "$link"
-      echo "created link \"${link}\" -> \"${dst}\""; return 
+      printf 'created link "%s" -> "%s"\n' "$link" "$dst" 2>&1
     fi
   else
     ln -s "$dst" "$link"
-    echo "created link \"${link}\" -> \"${dst}\""; return 
+    printf 'created link "%s" -> "%s"\n' "$link" "$dst" 2>&1
   fi
 }
 
-ensure_link "${DOT_DIR}/zsh" "${CONF_DIR}/zsh"
-ensure_link "${CONF_DIR}/zsh/zshrc.zsh" "$HOME/.zshrc"
-
-ensure_link "${DOT_DIR}/wezterm/wezterm.lua" "${CONF_DIR}/wezterm"
-
-ensure_link "${DOT_DIR}/htop" "${CONF_DIR}/htop"
-
-ensure_link "${DOT_DIR}/nvim" "${CONF_DIR}/nvim"
-
+point "${DOT_DIR}/zsh"                  "${CONF_DIR}/zsh"
+point "${CONF_DIR}/zsh/zshrc.zsh"       "$HOME/.zshrc"
+point "${DOT_DIR}/wezterm"              "${CONF_DIR}/wezterm"
+point "${DOT_DIR}/htop"                 "${CONF_DIR}/htop"
+point "${DOT_DIR}/nvim"                 "${CONF_DIR}/nvim"
