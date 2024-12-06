@@ -44,7 +44,7 @@ function _setup-defaults-global() {
 
 function _setup-defaults-accessibility() {
   defaults write com.apple.universalaccess reduceMotion -bool true
-  defaults write com.apple.universalaccess reduceTransparency -bool true
+  defaults write com.apple.universalaccess reduceTransparency -bool false
   defaults write com.apple.universalaccess differentiateWithoutColor -bool true
 }
 
