@@ -88,6 +88,13 @@ function _setup-defaults-mail() {
   killall Mail
 }
 
+function _setup-defaults-safari() {
+  defaults write com.apple.Safari DefaultPageZoom -float 0.85
+  defaults write com.apple.Safari ShowFullURLInSmartSearchField -bool true
+
+  killall Safari
+}
+
 function _setup-defaults-screencapture() {
   mkdir -p "$HOME/Screenshots"
   defaults write com.apple.screencapture show-thumbnail -bool true
@@ -103,6 +110,7 @@ function setup-defaults() {
     finder
     trackpad
     mail
+    safari
     screencapture
     accessibility
   )
@@ -117,7 +125,7 @@ function setup-defaults() {
     fi
 
     case "$1" in
-     global|dock|finder|trackpad|mail|screencapture|accessibility)
+     global|dock|finder|trackpad|mail|safari|screencapture|accessibility)
       "_setup-defaults-$1" ;;
     esac
     shift
