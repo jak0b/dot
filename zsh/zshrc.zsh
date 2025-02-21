@@ -124,6 +124,7 @@ fi
   export PASSWORD_STORE_DIR="$HOME/.local/share/pass"
   export PASSWORD_STORE_EXTENSIONS_DIR="$HOME/.local/lib/pass/"
   export PASSWORD_STORE_ENABLE_EXTENSIONS='true'
+  alias pass-fetch="git clone git@github.com:jak0b/pass.git $PASSWORD_STORE_DIR"
 }
 
 (( $+commands[go] )) && {
