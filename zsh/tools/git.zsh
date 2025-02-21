@@ -33,7 +33,7 @@ function git_prompt_info() {
     && upstream=" -> ${upstream}"
   fi
 
-  echo "${GIT_INFO_PREFIX}${ref:gs/%/%%}${upstream:gs/%/%%}${GIT_INFO_SUFFIX}"
+  echo "${GIT_INFO_PREFIX}${ref:gs/%/%%}${upstream:gs/%/%%}${GIT_INFO_SUFFIX} "
 }
 
 function git_short_sha() {
