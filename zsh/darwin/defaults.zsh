@@ -77,6 +77,7 @@ function _setup-defaults-dock() {
 function _setup-defaults-finder() {
   defaults write com.apple.finder DisableAllAnimations -bool true
   defaults write com.apple.finder QuitMenuItem -bool false
+  defaults write com.apple.finder CreateDesktop false
 
   killall Finder
 }
