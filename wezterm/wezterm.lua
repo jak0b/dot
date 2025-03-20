@@ -27,7 +27,7 @@ config.hide_tab_bar_if_only_one_tab = true
 config.window_decorations = "RESIZE|MACOS_FORCE_DISABLE_SHADOW|MACOS_FORCE_SQUARE_CORNERS"
 config.window_close_confirmation = "NeverPrompt"
 
-config.window_background_opacity = 0.92
+config.window_background_opacity = 0.96
 config.macos_window_background_blur = 20
 
 config.window_padding = { left = 0, right = 0, top = 0, bottom = 0 }
