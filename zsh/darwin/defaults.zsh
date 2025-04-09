@@ -12,14 +12,14 @@ function _setup-defaults-global() {
 
   defaults write NSGlobalDomain ApplePressAndHoldEnabled -bool false
   # System Settings > Mouse > Scrolling Speed
-  defaults write NSGlobalDomain com.apple.scrollwheel.scaling -float '2.5'
+  defaults write NSGlobalDomain com.apple.scrollwheel.scaling -float '3.5'
   # System Settings > Mouse > Tracking Speed
-  defaults write NSGlobalDomain com.apple.mouse.scaling -float '2.5'
+  defaults write NSGlobalDomain com.apple.mouse.scaling -float '3.5'
   # System Settings > Mouse > Double-Click Speed
   defaults write NSGlobalDomain com.apple.mouse.doubleClickThreshold -float '0.5'
 
   # System Settings > Trackpad > Point & Click > Tracking Speed
-  defaults write NSGlobalDomain com.apple.trackpad.scaling -float '1.5'
+  defaults write NSGlobalDomain com.apple.trackpad.scaling -float '2.5'
   # System Settings > Trackpad > Scroll & Zoom > Natural Scrolling
   defaults write NSGlobalDomain com.apple.swipescrolldirection -bool false
 
