@@ -106,6 +106,23 @@ function _setup-defaults-screencapture() {
   killall SystemUIServer
 }
 
+function _setup-defaults-spotlight() {
+  # make array empty
+  defaults write com.apple.Spotlight orderedItems -array
+
+  for item in SYSTEM_PREFS APPLICATIONS
+  do defaults write com.apple.Spotlight orderedItems -array-add "<dict><key>enabled</key><true/><key>name</key><string>${item}</string></dict>"
+  done
+
+  for item in MENU_EXPRESSION CONTACT MENU_CONVERSION MENU_DEFINITION SOURCE DOCUMENTS EVENT_TODO DIRECTORIES FONTS IMAGES MESSAGES MOVIES MUSIC MENU_OTHER PDF PRESENTATIONS MENU_SPOTLIGHT_SUGGESTIONS SPREADSHEETS TIPS BOOKMARKS SOURCE
+  do defaults write com.apple.Spotlight orderedItems -array-add "<dict><key>enabled</key><false/><key>name</key><string>${item}</string></dict>"
+  done
+
+  defaults write com.apple.Spotlight userHasMovedWindow -bool false
+  defaults write com.apple.Spotlight windowHeight -int 640
+
+  killall Spotlight
+}
 
 function setup-defaults() {
   local all_defaults=(
@@ -117,6 +134,7 @@ function setup-defaults() {
     safari
     screencapture
     accessibility
+    spotlight
   )
 
   while true; do
@@ -129,7 +147,7 @@ function setup-defaults() {
     fi
 
     case "$1" in
-     global|dock|finder|trackpad|mail|safari|screencapture|accessibility)
+     global|dock|finder|trackpad|mail|safari|screencapture|accessibility|spotlight)
       "_setup-defaults-$1" ;;
     esac
     shift
