@@ -124,6 +124,18 @@ function _setup-defaults-spotlight() {
   killall Spotlight
 }
 
+function _setup-defaults-rectangle() {
+  defaults write com.knollsoft.Rectangle maximize '{ keyCode = 46; modifierFlags = 1310720; }'
+
+  defaults write com.knollsoft.Rectangle leftHalf '{ keyCode = 4; modifierFlags = 1310720; }'
+  defaults write com.knollsoft.Rectangle rightHalf '{ keyCode = 37; modifierFlags = 1310720; }'
+
+  defaults write com.knollsoft.Rectangle firstThird '{ keyCode = 38; modifierFlags = 1310720; }'
+  defaults write com.knollsoft.Rectangle firstTwoThirds '{ keyCode = 40; modifierFlags = 1310720; }'
+
+  killall Spotlight && open -a Rectangle
+}
+
 function setup-defaults() {
   local all_defaults=(
     global
@@ -135,6 +147,7 @@ function setup-defaults() {
     screencapture
     accessibility
     spotlight
+    rectangle
   )
 
   while true; do
@@ -147,7 +160,7 @@ function setup-defaults() {
     fi
 
     case "$1" in
-     global|dock|finder|trackpad|mail|safari|screencapture|accessibility|spotlight)
+     global|dock|finder|trackpad|mail|safari|screencapture|accessibility|spotlight|rectangle)
       "_setup-defaults-$1" ;;
     esac
     shift
