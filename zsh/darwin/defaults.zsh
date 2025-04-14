@@ -61,6 +61,9 @@ function _setup-defaults-dock() {
   defaults write com.apple.dock expose-animation-duration -int 0
   defaults write com.apple.dock expose-animation-duration -float 0.1
 
+  # remove all apps from Dock
+  defaults write com.apple.dock persistent-apps -array
+
   # disable all hot corners
   for corner in bl br tl tr
   do
