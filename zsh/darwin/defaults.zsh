@@ -157,6 +157,6 @@ function setup-defaults() {
   vared -p 'Press Y to preceed... ' -c REPLY
 
   if [[ $REPLY == "Y" ]]
-    then sudo pkill loginwindow
+  then sudo launchctl bootout "user/$(id -u)"
   fi
 }
