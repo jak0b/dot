@@ -53,7 +53,7 @@ function _setup-defaults-dock() {
   defaults write com.apple.dock orientation -string "left"
   defaults write com.apple.dock autohide-delay -float 10000
   defaults write com.apple.dock no-bouncing -bool true
-  defaults write com.apple.dock tilesize -float 36 # make dock really small
+  defaults write com.apple.dock tilesize -float 1
   defaults write com.apple.dock expose-animation-duration -float 0
   defaults write com.apple.dock springboard-show-duration -float 0
   defaults write com.apple.dock springboard-hide-duration -float 0
