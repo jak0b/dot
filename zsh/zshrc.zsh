@@ -77,7 +77,8 @@ if [[ -f $ZSH_BASE/local.zsh ]]
 then source $ZSH_BASE/local.zsh
 fi
 
-alias r="source $ZSH_BASE/zshrc.zsh"
+alias r='exec zsh'
+alias rr="source $ZSH_BASE/zshrc.zsh"
 
 if (( $+commands[kubectl] ))
 then source $ZSH_BASE/tools/kubectl.zsh
