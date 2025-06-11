@@ -9,10 +9,10 @@ function setup_prompt() {
   case "$UID" in
     0)
       prompt_user='%F{red}%n%f'
-      prompt_line="%F{red}${arrow}%f"
+      prompt_line="%f${arrow} %f"
       ;;
     *)
-      prompt_user='%F{green}%n%f'
+      prompt_user='%F{cyan}%n%f'
       prompt_line="%f${arrow} %f"
       ;;
   esac
@@ -24,7 +24,7 @@ function setup_prompt() {
     prompt_host='%F{green}%m%f'
   fi
 
-  local user_host="[${prompt_user}%F{cyan}@${prompt_host}]"
+  local user_host="[${prompt_user}@%F{cyan}${prompt_host}]"
   local dir_info="%B%F{blue}%~%f%b"
   local return_code="%(?..%F{red}%?%f)"
 
