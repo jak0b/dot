@@ -102,9 +102,14 @@ fi
 
 (( $+commands[eza] )) && {
   alias ls='eza'
+
   alias l='ls'
+  alias lt='ls -T'
+
   alias ll='ls -lg'
+  alias llt='ls -T -lg'
   alias la='ll -a'
+  alias lat='ll -T -a'
 }
 
 (( $+commands[dog] )) && {
