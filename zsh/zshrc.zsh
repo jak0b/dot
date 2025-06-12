@@ -84,6 +84,10 @@ if (( $+commands[kubectl] ))
 then source $ZSH_BASE/tools/kubectl.zsh
 fi
 
+if (( $+commands[nomad] ))
+then source $ZSH_BASE/tools/nomad.zsh
+fi
+
 if (( $+commands[helm] ))
 then source $ZSH_BASE/tools/helm.zsh
 fi
