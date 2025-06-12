@@ -123,6 +123,18 @@ fi
   alias NS='dog NS'
 }
 
+(( $+commands[doggo] )) && {
+  alias DNS='doggo --any'
+  alias A='doggo A'
+  alias AAAA='doggo AAAA'
+  alias CNAME='doggo CNAME'
+
+  alias MX='doggo MX'
+  alias SOA='doggo SOA'
+  alias TXT='doggo TXT'
+  alias NS='doggo NS'
+}
+
 (( $+commands[nvim] )) && {
   alias v='nvim'
   alias vy='v -c "set ft=yaml"'
