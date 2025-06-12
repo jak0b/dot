@@ -11,3 +11,13 @@ function idasen() {
 
   curl "${server_url}/api/${position}"
 }
+
+function deskd() {
+  local aim secret
+  case "$1" in;
+    left|right|both) aim=$1 ;;
+    *) return 1 ;;
+  esac
+  curl "https://ha.jak0b.com/api/webhook/toggle-display-${aim}-$(hrdwid)"
+}
+

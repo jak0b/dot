@@ -93,7 +93,7 @@ then source $ZSH_BASE/tools/helm.zsh
 fi
 
 if (( $+commands[curl] ))
-then source $ZSH_BASE/tools/idasen.zsh
+then source $ZSH_BASE/tools/home.zsh
 fi
 
 if (( $+commands[aws] ))
