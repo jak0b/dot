@@ -60,3 +60,5 @@ function iwctl-reconnect() {
   iwctl station "$dev" disconnect
   iwctl station "$dev" connect "$current_network"
 }
+
+function hrdwid() { sha384sum /etc/machine-id | awk '{print $1}'; }
