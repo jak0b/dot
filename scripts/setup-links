@@ -8,6 +8,7 @@ else # used in Darwin or oter BSDs
 fi
 
 DOT_DIR="${CONF_DIR}/dot"
+LOC_DIR="${HOME}/.local/bin"
 
 function point() {
   local dst="$1" link="$2"
@@ -34,3 +35,5 @@ point "${CONF_DIR}/zsh/zshrc.zsh"       "$HOME/.zshrc"
 point "${DOT_DIR}/wezterm"              "${CONF_DIR}/wezterm"
 point "${DOT_DIR}/htop"                 "${CONF_DIR}/htop"
 point "${DOT_DIR}/nvim"                 "${CONF_DIR}/nvim"
+
+point "${DOT_DIR}/scripts/theme"        "${LOC_DIR}/theme"
