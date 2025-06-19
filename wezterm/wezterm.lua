@@ -9,7 +9,7 @@ elseif colorscheme == "light" then
   config.color_scheme = "Github Light (Gogh)"
 end
 
-config.font_size = 16.5
+config.font_size = 16
 config.font = wezterm.font({family = "Iosevka Nerd Font", weight = "Regular"})
 
 config.window_frame = {
