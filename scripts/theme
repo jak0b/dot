@@ -1,0 +1,154 @@
+#!/usr/bin/env bash
+
+function wezterm_ui_theme() {
+  local option tmp config_file
+  config_file="${HOME}/.config/wezterm/wezterm.lua"
+
+  case "$1" in
+    light|dark) option="$1" ;;
+    *) return 1 ;;
+  esac
+
+  tmp="$(mktemp)"
+  sed "s/local colorscheme =.*/local colorscheme = \"${option}\"/" \
+      "$config_file" > "$tmp"
+  mv "$tmp" "$config_file"
+}
+
+function nvim_ui_theme() {
+  local option tmp config_file
+  config_file="${HOME}/.config/dot/nvim/lua/base.lua"
+
+  case "$1" in
+    light|dark) option="$1" ;;
+    *) return 1 ;;
+  esac
+
+  tmp="$(mktemp)"
+  sed "s/local colorscheme =.*/local colorscheme = \"${option}\"/" \
+      "$config_file" > "$tmp"
+  mv "$tmp" "$config_file"
+
+}
+
+function os_ui_theme() {
+  local option
+  case "$1" in
+    light) option="false" ;;
+    dark) option="true" ;;
+    *) return 1 ;;
+  esac
+  osascript -e "tell application \"System Events\" to tell appearance preferences to set dark mode to ${option}"
+}
+
+function os_wallwapper() {
+  local option wallpaper_path wallpaper_path_ext variant
+
+  variant="$(defaults read com.jak0b wallpaper-variant)"
+
+  case "$1" in
+    light|dark) wallpaper_path="${HOME}/Pictures/Wallpapers/${variant}-${1}" ;;
+    *) return 1 ;;
+  esac
+
+  for ext in 'jpg' 'jpeg' 'png'
+  do
+    wallpaper_path_ext="${wallpaper_path}.${ext}" 
+    if [[ -f $wallpaper_path_ext ]]
+    then
+      wallpaper_path="$wallpaper_path_ext"
+    fi
+  done
+
+  if [[ ! -f $wallpaper_path ]]
+  then echo "$wallpaper_path wasn't found" && return 1
+  fi
+
+  osascript -e "tell application \"System Events\" to tell every desktop to set picture to \"${wallpaper_path}\""
+}
+
+function wallpapers() {
+  local url_base file_base url file
+  url_base='https://512pixels.net/downloads'
+  file_base="$HOME/Pictures/Wallpapers"
+
+  if [[ ! -d $file_base ]]
+  then mkdir -p "$file_base"
+  fi
+
+  typeset -A wallpapers=(
+    ['tahoe-light.png']='macos-wallpapers-6k/26-Tahoe-Light-6K.png'
+    ['tahoe-dark.png']='macos-wallpapers-6k/26-Tahoe-Dark-6K.png'
+
+    ['sequoia-light.jpg']='macos-wallpapers-6k/15-Sequoia-Light-6K.jpg'
+    ['sequoia-dark.jpg']='macos-wallpapers-6k/15-Sequoia-Dark-6K.jpg'
+
+    ['monterey-light.jpg']='macos-wallpapers-6k/12-Light.jpg'
+    ['monterey-dark.jpg']='macos-wallpapers-6k/12-Dark.jpg'
+
+    ['bigsur-light.jpg']='macos-wallpapers/11-0-Color-Day.jpg'
+    ['bigsur-dark.jpg']='macos-wallpapers/11-0-Big-Sur-Color-Night.jpg'
+
+    ['mojave-light.jpg']='macos-wallpapers-6k/10-14-Day-6k.jpg'
+    ['mojave-dark.jpg']='macos-wallpapers-6k/10-14-Night-6k.jpg'
+  )
+
+  for file location in ${(kv)wallpapers}
+  do
+    url="$(printf '%s/%s' "$url_base" "$location")"
+    full_path="$(printf '%s/%s' "$file_base" "$file")"
+    echo $file $url
+
+    if [[ ! -f $full_path ]]
+    then curl -s -L -o "$full_path" "$url"
+    fi
+  done
+}
+
+function main() {
+  if [[ $# -lt 1 ]]
+  then
+      printf "Not enough arguments\n" >/dev/stderr
+      exit 1
+  fi
+
+  case "$1" in
+    dark)
+      os_ui_theme dark &
+      os_wallwapper dark &
+      wezterm_ui_theme dark &
+      nvim_ui_theme dark &
+      wait
+      ;;
+    light)
+      os_ui_theme light &
+      os_wallwapper light &
+      wezterm_ui_theme light &
+      nvim_ui_theme light &
+      wait
+      ;;
+    wallpaper)
+      if [[ -n $2 ]]
+      then
+        for available in $(ls $HOME/Pictures/Wallpapers | cut -d'.' -f1 | cut -d'-' -f1 | sort -u)
+        do
+          echo $available
+          if [[ $available = $2 ]]
+          then defaults write com.jak0b wallpaper-variant "$2" && exit 0
+          fi
+          echo 'no such wallpaper variant' && exit 1
+        done
+      else
+        defaults read com.jak0b wallpaper-variant
+      fi
+      ;;
+    wallpapers)
+      wallpapers
+      ;;
+    *)
+      printf "Unsupported parameter \`%s\`\n" "$1" >/dev/stderr
+      exit 1
+  esac
+}
+
+main "$@"
