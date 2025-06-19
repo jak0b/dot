@@ -183,7 +183,7 @@ fi
 
 function alias_config() {
   local name="$1" config_path="$2"
-  [[ -n $EDITOR ]] && alias "$name"conf="$EDITOR $config_path"
+  [[ -n $EDITOR ]] && alias "$name"conf="\$EDITOR $config_path"
 }; {
   alias_config zsh     "$HOME/.config/zsh/"
   alias_config ssh     "$HOME/.ssh/config"
