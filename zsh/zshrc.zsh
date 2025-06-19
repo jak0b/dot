@@ -68,8 +68,15 @@ case "$os" in
     FPATH="${FPATH}:/opt/homebrew/share/zsh/site-functions"
     source $ZSH_BASE/darwin/tools.zsh
     source $ZSH_BASE/darwin/defaults.zsh
+
     alias c='pbcopy'
     alias p='pbpaste'
+
+    if (( $+commands[theme] ))
+    then
+      alias dark='theme dark'
+      alias light='theme light'
+    fi
     ;;
 esac
 
