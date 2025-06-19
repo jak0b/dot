@@ -93,8 +93,9 @@ function wallpapers() {
     ['mojave-dark.jpg']='macos-wallpapers-6k/10-14-Night-6k.jpg'
   )
 
-  for file location in ${(kv)wallpapers}
+  for file in ${!arr[@]}
   do
+    location=${wallpapers[${file}]}
     url="$(printf '%s/%s' "$url_base" "$location")"
     full_path="$(printf '%s/%s' "$file_base" "$file")"
     echo $file $url
