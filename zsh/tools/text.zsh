@@ -25,6 +25,19 @@ function encode-html() {
   printf -- %s "$s"
 }
 
+function pickchars() {
+  local first_line
+  read -r first_line
+
+  for (( i = 1; i <= ${#first_line}; i++ )); do
+    for arg in "$@"; do
+      if (( i == arg )); then
+        echo "$i ${first_line[i]}"
+      fi
+    done
+  done
+}
+
 function encode-url() {
   local s="$1"; if [ -z "$s" ]; then read s; fi
 
