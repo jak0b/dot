@@ -46,25 +46,38 @@ function os_wallwapper() {
 
   variant="$(defaults read com.jak0b wallpaper-variant)"
 
-  case "$1" in
-    light|dark) wallpaper_path="${HOME}/Pictures/Wallpapers/${variant}-${1}" ;;
-    *) return 1 ;;
+  case "$variant" in
+    solid-color)
+      case "$1" in
+        light) wallpaper_path='/System/Library/Desktop Pictures/Solid Colors/Silver.png' ;;
+        dark) wallpaper_path='/System/Library/Desktop Pictures/Solid Colors/Black.png' ;;
+        *) return 1 ;;
+      esac
+      ;;
+    *)
+      case "$1" in
+        light|dark) wallpaper_path="${HOME}/Pictures/Wallpapers/${variant}-${1}" ;;
+        *) return 1 ;;
+      esac
+
+      for ext in 'jpg' 'jpeg' 'png'
+      do
+        wallpaper_path_ext="${wallpaper_path}.${ext}" 
+        if [[ -f $wallpaper_path_ext ]]
+        then
+          wallpaper_path="$wallpaper_path_ext"
+        fi
+      done
+
+      if [[ ! -f $wallpaper_path ]]
+      then echo "$wallpaper_path wasn't found" && return 1
+      fi
+      ;;
   esac
 
-  for ext in 'jpg' 'jpeg' 'png'
-  do
-    wallpaper_path_ext="${wallpaper_path}.${ext}" 
-    if [[ -f $wallpaper_path_ext ]]
-    then
-      wallpaper_path="$wallpaper_path_ext"
-    fi
-  done
-
-  if [[ ! -f $wallpaper_path ]]
-  then echo "$wallpaper_path wasn't found" && return 1
-  fi
-
-  osascript -e "tell application \"System Events\" to tell every desktop to set picture to \"${wallpaper_path}\""
+  /usr/libexec/PlistBuddy -c "set AllSpacesAndDisplays:Desktop:Content:Choices:0:Files:0:relative file://${wallpaper_path}" \
+                           "${HOME}/Library/Application Support/com.apple.wallpaper/Store/Index.plist" && \
+  killall WallpaperAgent
 }
 
 function wallpapers() {
