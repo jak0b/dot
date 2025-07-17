@@ -1,6 +1,7 @@
-local colorscheme = "dark"
+local wezterm = require "wezterm"
 
-local wezterm = require("wezterm")
+local colorscheme = require "colorscheme"
+
 local config = wezterm.config_builder()
 
 local github_dark_gogh = {
