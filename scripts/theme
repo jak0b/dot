@@ -1,34 +1,24 @@
 #!/usr/bin/env bash
 
-function wezterm_ui_theme() {
-  local option tmp config_file
-  config_file="${HOME}/.config/wezterm/wezterm.lua"
+function lua_colorscheme() {
+  local option config_file
 
   case "$1" in
     light|dark) option="$1" ;;
     *) return 1 ;;
   esac
 
-  tmp="$(mktemp)"
-  sed "s/local colorscheme =.*/local colorscheme = \"${option}\"/" \
-      "$config_file" > "$tmp"
-  mv "$tmp" "$config_file"
+  config_file="$2"
+
+  printf "return \"%s\"\n" "$option" > "$config_file"
+}
+
+function wezterm_ui_theme() {
+  lua_colorscheme "$1" "${HOME}/.config/wezterm/colorscheme.lua"
 }
 
 function nvim_ui_theme() {
-  local option tmp config_file
-  config_file="${HOME}/.config/dot/nvim/lua/base.lua"
-
-  case "$1" in
-    light|dark) option="$1" ;;
-    *) return 1 ;;
-  esac
-
-  tmp="$(mktemp)"
-  sed "s/local colorscheme =.*/local colorscheme = \"${option}\"/" \
-      "$config_file" > "$tmp"
-  mv "$tmp" "$config_file"
-
+  lua_colorscheme "$1" "${HOME}/.config/dot/nvim/lua/colorscheme.lua"
 }
 
 function os_ui_theme() {
