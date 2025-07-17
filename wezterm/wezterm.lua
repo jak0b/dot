@@ -3,10 +3,50 @@ local colorscheme = "dark"
 local wezterm = require("wezterm")
 local config = wezterm.config_builder()
 
+local github_dark_gogh = {
+  background = "#000000", foreground = "#8B949E",
+  cursor_bg = "#C9D1D9", cursor_fg = "#101216",
+  cursor_border = "#C9D1D9",
+
+  ansi = {
+    "#000000", "#F78166",
+    "#56D364", "#E3B341",
+    "#6CA4F8", "#DB61A2",
+    "#2B7489", "#FFFFFF"
+  },
+
+  brights = {
+    "#4D4D4D", "#F78166",
+    "#56D364", "#E3B341",
+    "#6CA4F8", "#DB61A2",
+    "#2B7489", "#FFFFFF"
+  }
+}
+
+local github_light_gogh = {
+  background = "#F4F4F4", foreground = "#3E3E3E",
+  cursor_bg = "#3E3E3E", cursor_fg = "#F4F4F4",
+  cursor_border = "#3E3E3E",
+
+  ansi = {
+    "#3E3E3E", "#970B16",
+    "#07962A", "#F8EEC7",
+    "#003E8A", "#E94691",
+    "#89D1EC", "#FFFFFF"
+  },
+
+  brights = {
+    "#666666", "#DE0000",
+    "#87D5A2", "#F1D007",
+    "#2E6CBA", "#FFA29F",
+    "#1CFAFE", "#FFFFFF"
+  }
+}
+
 if colorscheme == "dark" then
-  config.color_scheme = "Github Dark (Gogh)"
+  config.colors = github_dark_gogh
 elseif colorscheme == "light" then
-  config.color_scheme = "Github Light (Gogh)"
+  config.colors = github_light_gogh
 end
 
 config.font_size = 16
