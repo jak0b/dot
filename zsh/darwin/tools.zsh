@@ -9,3 +9,10 @@ function hrdwid() {
     | grep -v 'System Firmware Version\|OS Loader Version' \
     | sha384
 }
+
+function pv() {
+  if [[ -z $@ ]]
+  then qlmanage -p . >/dev/null
+  else qlmanage -p "$@" >/dev/null
+  fi
+}
