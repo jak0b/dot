@@ -26,6 +26,17 @@ config.window_decorations = "RESIZE|MACOS_FORCE_DISABLE_SHADOW|MACOS_FORCE_SQUAR
 config.window_close_confirmation = "NeverPrompt"
 config.audible_bell = "Disabled"
 config.cursor_blink_rate = 0
+config.pane_focus_follows_mouse = true
+config.prefer_to_spawn_tabs = true
+config.show_close_tab_button_in_tabs = false
+config.tab_bar_at_bottom = false
+config.use_fancy_tab_bar = false
+config.show_tab_index_in_tab_bar = true
+config.tab_max_width = 64
+config.show_new_tab_button_in_tab_bar = true
+
+config.native_macos_fullscreen_mode = false
+config.macos_fullscreen_extend_behind_notch = true
 
 config.window_padding = { left = 0, right = 0, top = 0, bottom = 0 }
 
