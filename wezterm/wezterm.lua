@@ -1,48 +1,9 @@
 local wezterm = require "wezterm"
 
 local colorscheme = require "colorscheme"
+local colors = require "colors"
 
 local config = wezterm.config_builder()
-
-local github_dark_gogh = {
-  background = "#000000", foreground = "#8B949E",
-  cursor_bg = "#C9D1D9", cursor_fg = "#101216",
-  cursor_border = "#C9D1D9",
-
-  ansi = {
-    "#000000", "#F78166",
-    "#56D364", "#E3B341",
-    "#6CA4F8", "#DB61A2",
-    "#2B7489", "#FFFFFF",
-  },
-
-  brights = {
-    "#4D4D4D", "#F78166",
-    "#56D364", "#E3B341",
-    "#6CA4F8", "#DB61A2",
-    "#2B7489", "#FFFFFF",
-  }
-}
-
-local github_light_gogh = {
-  background = "#F6F8FA", foreground = "#1F2328",
-  cursor_bg = "#1F2328", cursor_fg = "#F6F8FA",
-  cursor_border = "#1F2328",
-
-  ansi = {
-    "#24292F", "#CF222E",
-    "#1A7F37", "#9A6700",
-    "#0969DA", "#8250DF",
-    "#1B7C83", "#6E7781",
-  },
-
-  brights = {
-    "#57606A", "#A40E26",
-    "#2DA44E", "#BF8700",
-    "#218BFF", "#A475F9",
-    "#3192AA", "#8C959F",
-  }
-}
 
 if colorscheme == "dark" then
   config.colors = github_dark_gogh
