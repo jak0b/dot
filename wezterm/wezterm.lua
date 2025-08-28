@@ -31,10 +31,59 @@ config.window_padding = { left = 0, right = 0, top = 0, bottom = 0 }
 
 config.max_fps = 240
 
-config.keys = {{
-  key = "w",
-  mods = "CMD",
-  action = wezterm.action.CloseCurrentTab {confirm = false}
-}}
+config.inactive_pane_hsb = {
+  saturation = 0.95,
+  brightness = 0.9,
+}
+
+config.tab_bar_style = {
+  new_tab = wezterm.format {{ Text = ' ○  ' }},
+  new_tab_hover = wezterm.format {{ Text = ' ●  ' }},
+}
+
+config.leader = { key = 'a', mods = 'CTRL', timeout_milliseconds = 2000 }
+
+config.keys = {
+  { key = "raw:47",   mods = "CTRL",    action = wezterm.action.ShowTabNavigator },
+  { key = "raw:51",   mods = "CMD",    action = wezterm.action.ActivateCommandPalette },
+  { key = "raw:51",   mods = "CTRL",    action = wezterm.action.ShowLauncher },
+
+  { key = "d",   mods = "LEADER", action = wezterm.action.QuickSelectArgs { patterns = {'[a-zA-Z0-9_.-]+'} } },
+
+  { key = "a",   mods = "LEADER", action = wezterm.action.SplitVertical { domain = 'CurrentPaneDomain'}},
+  { key = "s",   mods = "LEADER", action = wezterm.action.SplitHorizontal { domain = 'CurrentPaneDomain'}},
+  { key = "f",   mods = "CTRL", action = wezterm.action.TogglePaneZoomState },
+
+  { key = "w",   mods = "CMD", action = wezterm.action.CloseCurrentPane {confirm = true}},
+  { key = "w",   mods = "LEADER", action = wezterm.action.CloseCurrentTab {confirm = true}},
+
+  { key = "Tab",   mods = "LEADER", action = wezterm.action.ActivatePaneDirection 'Next'},
+
+  { key = "h",   mods = "LEADER", action = wezterm.action.ActivatePaneDirection 'Left'},
+  { key = "l",   mods = "LEADER", action = wezterm.action.ActivatePaneDirection 'Right'},
+  { key = "j",   mods = "LEADER", action = wezterm.action.ActivatePaneDirection 'Down'},
+  { key = "k",   mods = "LEADER", action = wezterm.action.ActivatePaneDirection 'Up'},
+
+  { key = "h",   mods = "LEADER|ALT", action = wezterm.action.AdjustPaneSize { 'Left', 1 }},
+  { key = "l",   mods = "LEADER|ALT", action = wezterm.action.AdjustPaneSize { 'Right', 1 }},
+  { key = "j",   mods = "LEADER|ALT", action = wezterm.action.AdjustPaneSize { 'Down', 1 }},
+  { key = "k",   mods = "LEADER|ALT", action = wezterm.action.AdjustPaneSize { 'Up', 1 }},
+
+  { key = "h",   mods = "LEADER|SHIFT", action = wezterm.action.AdjustPaneSize { 'Left', 5 }},
+  { key = "l",   mods = "LEADER|SHIFT", action = wezterm.action.AdjustPaneSize { 'Right', 5 }},
+  { key = "j",   mods = "LEADER|SHIFT", action = wezterm.action.AdjustPaneSize { 'Down', 5 }},
+  { key = "k",   mods = "LEADER|SHIFT", action = wezterm.action.AdjustPaneSize { 'Up', 5 }},
+
+  { key = "t",   mods = "LEADER", action = wezterm.action_callback(function(win, pane)
+        wezterm.background_child_process { '/Users/j0b/.local/bin/theme' } end), },
+
+  { key = "c",   mods = "LEADER", action = wezterm.action.ActivateCopyMode },
+
+}
+
+wezterm.on('format-tab-title', function(tab, tabs, panes, config, hover, max_width)
+    return {{ Text = ' ' .. tab.active_pane.title .. ' '  }}
+  end
+)
 
 return config
