@@ -6,9 +6,12 @@ local colors = require "colors"
 local config = wezterm.config_builder()
 
 if colorscheme == "dark" then
-  config.colors = github_dark_gogh
+  config.colors = colors.github_dark_gogh
+  config.colors.tab_bar = colors.apply_tab_bar_theme(config.colors, colors.github_dark_gogh_tab_bar)
+
 elseif colorscheme == "light" then
-  config.colors = github_light_gogh
+  config.colors = colors.github_light_gogh
+  config.colors.tab_bar = colors.apply_tab_bar_theme(config.colors, colors.github_dark_gogh_tab_bar)
 end
 
 config.font_size = 16
