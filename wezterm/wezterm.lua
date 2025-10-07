@@ -42,10 +42,8 @@ config.window_padding = { left = 0, right = 0, top = 0, bottom = 0 }
 
 config.max_fps = 240
 
-config.inactive_pane_hsb = {
-  saturation = 0.95,
-  brightness = 0.9,
-}
+config.window_padding = { left = 7, right = 7, top = 7, bottom = 7 }
+config.inactive_pane_hsb = { saturation = 1, brightness = 1 }
 
 config.tab_bar_style = {
   new_tab = wezterm.format {{ Text = ' ○  ' }},
