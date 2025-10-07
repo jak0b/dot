@@ -53,41 +53,33 @@ config.tab_bar_style = {
 config.leader = { key = 'f', mods = 'CTRL', timeout_milliseconds = 2000 }
 
 config.keys = {
-  { key = "raw:47",   mods = "CTRL",    action = wezterm.action.ShowTabNavigator },
-  { key = "raw:51",   mods = "CMD",    action = wezterm.action.ActivateCommandPalette },
-  { key = "raw:51",   mods = "CTRL",    action = wezterm.action.ShowLauncher },
+  { key = "raw:51", mods = "CMD",        action = wezterm.action.ActivateCommandPalette },
+  { key = ";",      mods = "CMD",        action = wezterm.action.ActivateCommandPalette },
 
-  { key = "d",   mods = "LEADER", action = wezterm.action.QuickSelectArgs { patterns = {'[a-zA-Z0-9_.-]+'} } },
+  { key = "raw:51", mods = "CMD|SHIFT",  action = wezterm.action.ShowLauncher },
+  { key = ";",      mods = "CMD|SHIFT",  action = wezterm.action.ShowLauncher },
 
-  { key = "a",   mods = "LEADER", action = wezterm.action.SplitVertical { domain = 'CurrentPaneDomain'}},
-  { key = "s",   mods = "LEADER", action = wezterm.action.SplitHorizontal { domain = 'CurrentPaneDomain'}},
-  { key = "f",   mods = "CTRL", action = wezterm.action.TogglePaneZoomState },
+  { key = "d",      mods = "LEADER",     action = wezterm.action.QuickSelectArgs { patterns = {'[a-zA-Z0-9_.-]+'} } },
 
-  { key = "w",   mods = "CMD", action = wezterm.action.CloseCurrentPane {confirm = true}},
-  { key = "w",   mods = "LEADER", action = wezterm.action.CloseCurrentTab {confirm = true}},
+  { key = "v",      mods = "LEADER",     action = wezterm.action.SplitVertical { domain = 'CurrentPaneDomain'}},
+  { key = "z",      mods = "LEADER",     action = wezterm.action.SplitHorizontal { domain = 'CurrentPaneDomain'}},
+  { key = "a",      mods = "LEADER",     action = wezterm.action.TogglePaneZoomState },
 
-  { key = "Tab",   mods = "LEADER", action = wezterm.action.ActivatePaneDirection 'Next'},
+  { key = "s",      mods = "LEADER",     action = wezterm.action.PaneSelect},
+  { key = "w",      mods = "CMD",        action = wezterm.action.CloseCurrentPane {confirm = true}},
+  { key = "w",      mods = "LEADER",     action = wezterm.action.CloseCurrentTab {confirm = true}},
 
-  { key = "h",   mods = "LEADER", action = wezterm.action.ActivatePaneDirection 'Left'},
-  { key = "l",   mods = "LEADER", action = wezterm.action.ActivatePaneDirection 'Right'},
-  { key = "j",   mods = "LEADER", action = wezterm.action.ActivatePaneDirection 'Down'},
-  { key = "k",   mods = "LEADER", action = wezterm.action.ActivatePaneDirection 'Up'},
+  { key = "c",      mods = "LEADER",     action = wezterm.action.ActivateCopyMode },
 
-  { key = "h",   mods = "LEADER|ALT", action = wezterm.action.AdjustPaneSize { 'Left', 1 }},
-  { key = "l",   mods = "LEADER|ALT", action = wezterm.action.AdjustPaneSize { 'Right', 1 }},
-  { key = "j",   mods = "LEADER|ALT", action = wezterm.action.AdjustPaneSize { 'Down', 1 }},
-  { key = "k",   mods = "LEADER|ALT", action = wezterm.action.AdjustPaneSize { 'Up', 1 }},
+  { key = "h",      mods = "LEADER",     action = wezterm.action.ActivatePaneDirection 'Left'},
+  { key = "l",      mods = "LEADER",     action = wezterm.action.ActivatePaneDirection 'Right'},
+  { key = "j",      mods = "LEADER",     action = wezterm.action.ActivatePaneDirection 'Down'},
+  { key = "k",      mods = "LEADER",     action = wezterm.action.ActivatePaneDirection 'Up'},
 
-  { key = "h",   mods = "LEADER|SHIFT", action = wezterm.action.AdjustPaneSize { 'Left', 5 }},
-  { key = "l",   mods = "LEADER|SHIFT", action = wezterm.action.AdjustPaneSize { 'Right', 5 }},
-  { key = "j",   mods = "LEADER|SHIFT", action = wezterm.action.AdjustPaneSize { 'Down', 5 }},
-  { key = "k",   mods = "LEADER|SHIFT", action = wezterm.action.AdjustPaneSize { 'Up', 5 }},
-
-  { key = "t",   mods = "LEADER", action = wezterm.action_callback(function(win, pane)
-        wezterm.background_child_process { '/Users/j0b/.local/bin/theme' } end), },
-
-  { key = "c",   mods = "LEADER", action = wezterm.action.ActivateCopyMode },
-
+  { key = "h",      mods = "CTRL|SHIFT", action = wezterm.action.AdjustPaneSize { 'Left', 1 }},
+  { key = "l",      mods = "CTRL|SHIFT", action = wezterm.action.AdjustPaneSize { 'Right', 1 }},
+  { key = "j",      mods = "CTRL|SHIFT", action = wezterm.action.AdjustPaneSize { 'Down', 1 }},
+  { key = "k",      mods = "CTRL|SHIFT", action = wezterm.action.AdjustPaneSize { 'Up', 1 }},
 }
 
 return config
