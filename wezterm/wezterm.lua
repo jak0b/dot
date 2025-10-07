@@ -50,7 +50,7 @@ config.tab_bar_style = {
   new_tab_hover = wezterm.format {{ Text = ' ●  ' }},
 }
 
-config.leader = { key = 'a', mods = 'CTRL', timeout_milliseconds = 2000 }
+config.leader = { key = 'f', mods = 'CTRL', timeout_milliseconds = 2000 }
 
 config.keys = {
   { key = "raw:47",   mods = "CTRL",    action = wezterm.action.ShowTabNavigator },
