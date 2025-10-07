@@ -22,7 +22,7 @@ config.adjust_window_size_when_changing_font_size = false
 config.quit_when_all_windows_are_closed = false
 config.hide_tab_bar_if_only_one_tab = true
 
-config.window_decorations = "RESIZE|MACOS_FORCE_DISABLE_SHADOW|MACOS_FORCE_SQUARE_CORNERS"
+config.window_decorations = "RESIZE|MACOS_FORCE_DISABLE_SHADOW"
 config.window_close_confirmation = "NeverPrompt"
 config.audible_bell = "Disabled"
 config.cursor_blink_rate = 0
