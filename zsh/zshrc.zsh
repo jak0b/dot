@@ -119,27 +119,15 @@ fi
   alias lat='ll -T -a'
 }
 
-(( $+commands[dog] )) && {
-  alias A='dog A'
-  alias AAAA='dog AAAA'
-  alias CNAME='dog CNAME'
+(( $+commands[doge] )) && {
+  alias A='doge A'
+  alias AAAA='doge AAAA'
+  alias CNAME='doge CNAME'
 
-  alias MX='dog MX'
-  alias SOA='dog SOA'
-  alias TXT='dog TXT'
-  alias NS='dog NS'
-}
-
-(( $+commands[doggo] )) && {
-  alias DNS='doggo --any'
-  alias A='doggo A'
-  alias AAAA='doggo AAAA'
-  alias CNAME='doggo CNAME'
-
-  alias MX='doggo MX'
-  alias SOA='doggo SOA'
-  alias TXT='doggo TXT'
-  alias NS='doggo NS'
+  alias MX='doge MX'
+  alias SOA='doge SOA'
+  alias TXT='doge TXT'
+  alias NS='doge NS'
 }
 
 (( $+commands[nvim] )) && {
