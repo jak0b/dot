@@ -52,6 +52,10 @@ config.tab_bar_style = {
 
 config.leader = { key = 'f', mods = 'CTRL', timeout_milliseconds = 2000 }
 
+config.command_palette_font = config.font
+config.command_palette_bg_color = '#000'
+config.command_palette_fg_color = '#FFF'
+
 config.keys = {
   { key = "raw:51", mods = "CMD",        action = wezterm.action.ActivateCommandPalette },
   { key = ";",      mods = "CMD",        action = wezterm.action.ActivateCommandPalette },
