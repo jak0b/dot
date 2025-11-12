@@ -96,6 +96,9 @@ function _setup-defaults-safari() {
   defaults write com.apple.Safari DefaultPageZoom -float 0.85
   defaults write com.apple.Safari ShowFullURLInSmartSearchField -bool true
 
+  defaults write com.apple.Safari IncludeDevelopMenu -bool true
+  defaults write com.apple.Safari.SandboxBroker ShowDevelopMenu -bool true
+
   killall Safari
 }
 
