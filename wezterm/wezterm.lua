@@ -57,6 +57,9 @@ config.command_palette_bg_color = '#000'
 config.command_palette_fg_color = '#FFF'
 
 config.keys = {
+  { key = "t",      mods = "SUPER",       action = wezterm.action.SpawnTab 'DefaultDomain' },
+  { key = "t",      mods = "SUPER|SHIFT", action = wezterm.action.SpawnTab 'CurrentPaneDomain' },
+
   { key = "raw:51", mods = "CMD",        action = wezterm.action.ActivateCommandPalette },
   { key = ";",      mods = "CMD",        action = wezterm.action.ActivateCommandPalette },
 
