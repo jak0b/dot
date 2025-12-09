@@ -14,8 +14,8 @@ elseif colorscheme == "light" then
   config.colors.tab_bar = colors.apply_tab_bar_theme(config.colors, colors.github_dark_gogh_tab_bar)
 end
 
-config.font_size = 15.5
-config.font = wezterm.font({family = "Iosevka Nerd Font", weight=490})
+config.font_size = 17
+config.font = wezterm.font({family = "Iosevka Nerd Font"})
 
 config.tab_and_split_indices_are_zero_based = true
 config.adjust_window_size_when_changing_font_size = false
