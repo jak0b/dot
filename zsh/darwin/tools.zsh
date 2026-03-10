@@ -16,3 +16,11 @@ function pv() {
   else qlmanage -p "$@" >/dev/null
   fi
 }
+
+function reboot() {
+  sudo shutdown -r now
+}
+
+function poweroff() {
+  sudo shutdown -h now
+}
