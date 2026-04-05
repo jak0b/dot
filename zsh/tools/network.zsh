@@ -1,8 +1,5 @@
 function pubip() {
-  local ip_version
-
-  ip_version="${1:-64}"
-  echo "$(curl -s "https://api${ip_version}.ipify.org")"
+  echo "$(curl -s "http://checkip.amazonaws.com")"
 }
 
 function ping-default-route() {
