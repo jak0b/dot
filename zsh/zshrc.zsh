@@ -164,7 +164,11 @@ if (( $+commands[fzf] )); then
       ;;
     Linux)
       [[ $- == *i* ]] && source "/usr/share/fzf/completion.zsh" 2> /dev/null
-      source '/usr/share/fzf/key-bindings.zsh'
+      if [[ -f '/usr/share/fzf/key-bindings.zsh' ]]
+      then source '/usr/share/fzf/key-bindings.zsh'
+      elif [[ -f '/usr/share/fzf/shell/key-bindings.zsh' ]]
+      then source '/usr/share/fzf/shell/key-bindings.zsh'
+      fi
       ;;
   esac
 fi
