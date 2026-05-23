@@ -196,4 +196,25 @@ function cd_dots_alias() {
   done
 } && cd_dots_alias 6 && unset -f cd_dots_alias
 
+function vpn() {
+  local local_ip="$(locip)"
+  # use default gateway to connect to the router
+  local router="$(route -n get -inet default | awk '/gateway/{print $2')"
+
+  local selector="find src-address=${local_ip}/32"
+
+  # only if a VPN routing rule exists for a local IPv4
+  # (output contains *)
+  if [[ "$(ssh $router ":put [/routing/rule/${selector}]")" == *"*"* ]]
+  then
+    case "$1" in
+      off) ssh $router "/routing/rule/disable [${selector}]" ;;
+      *) ssh $router "/routing/rule/enable [${selector}]" ;;
+    esac
+  fi
+  sleep 1
+
+  echo this is the public IP now: $(pubip)
+}
+
 compinit
