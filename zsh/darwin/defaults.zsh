@@ -93,7 +93,7 @@ function _setup-defaults-mail() {
 }
 
 function _setup-defaults-safari() {
-  defaults write com.apple.Safari DefaultPageZoom -float 0.85
+  defaults write com.apple.Safari DefaultPageZoom -float 0.90
   defaults write com.apple.Safari ShowFullURLInSmartSearchField -bool true
 
   defaults write com.apple.Safari IncludeDevelopMenu -bool true
