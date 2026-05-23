@@ -153,6 +153,10 @@ fi
   export PATH="$PATH:$HOME/.cargo/bin"
 }
 
+(( $+commands[bun] )) && {
+  export PATH="$PATH:$HOME/.bun/bin"
+}
+
 if (( $+commands[fzf] )); then
   case "$os" in
     Darwin)
