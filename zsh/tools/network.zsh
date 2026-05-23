@@ -1,5 +1,16 @@
 function pubip() {
-  echo "$(curl -s "http://checkip.amazonaws.com")"
+  local url="http://ifconfig.co"
+  local cmd=(curl -s)
+
+  if (( ${+VERBOSE} ));
+  then local cmd=(curl -v -s)
+  fi
+
+  case "$1" in
+    4) ${cmd[@]} -4 "$url" ;;
+    6) ${cmd[@]} -6 "$url" ;;
+    *) ${cmd[@]} "$url" ;;
+  esac
 }
 
 function ping-default-route() {
