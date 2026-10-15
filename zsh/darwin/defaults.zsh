@@ -39,6 +39,8 @@ function _setup-defaults-global() {
   defaults write NSGlobalDomain NSBrowserColumnAnimationSpeedMultiplier -float 0
   defaults write NSGlobalDomain NSWindowResizeTime .001
 
+  defaults write NSGlobalDomain NSAutomaticCapitalizationEnabled -int 0
+
   defaults write NSGlobalDomain AppleKeyboardUIMode -int 2
 }
 
